@@ -40,13 +40,13 @@ TEST_CASE("createSpotlight", "[weight=1]") {
   }
 
   SECTION("Spotlight creates an 80% dark pixel >160 pixels away") {
-    REQUIRE( png.getPixel(320, 50).l * 0.2 == result.getPixel(320, 50).l );
+    REQUIRE( png.getPixel(320, 50).l * 0.2 == Approx(result.getPixel(320, 50).l) );
   }
   
   SECTION("Spotlight is correct at 20 pixels away from center") {
     REQUIRE( png.getPixel(100, 50 + 20).l * 0.9 == result.getPixel(100, 50 + 20).l );
   }
-    
+
   SECTION("Spotlight is correct at 5 pixels away from center") {
     REQUIRE( png.getPixel(100 + 3, 50 + 4).l * 0.975 == result.getPixel(100 + 3, 50 + 4).l );
   }
@@ -73,14 +73,14 @@ TEST_CASE("illinify", "[weight=1]") {
     REQUIRE( result.getPixel(220, 23).h == 216 );
     REQUIRE( result.getPixel(230, 44).h == 216 );
   }
-  
+
   SECTION("Pixels closest to orange become orange") {
     REQUIRE( result.getPixel(10, 4).h == 11 );
     REQUIRE( result.getPixel(30, 12).h == 11 );
     REQUIRE( result.getPixel(40, 23).h == 11 );
     REQUIRE( result.getPixel(40, 44).h == 11 );
   }
-    
+
   SECTION("Hue wrap-arounds are correct (remember: h=359 is closer to orange than blue)") {
     REQUIRE( result.getPixel(330, 4).h == 11 );
     REQUIRE( result.getPixel(340, 12).h == 11 );
@@ -103,5 +103,5 @@ TEST_CASE("watermark", "[weight=1]") {
   SECTION("Pixels with watermark are changed") {
     REQUIRE( png.getPixel(100, 15).l + 0.2 == result.getPixel(100, 15).l );
     REQUIRE( png.getPixel(200, 25).l + 0.2 == result.getPixel(200, 25).l );
-  }  
+  }
 }
