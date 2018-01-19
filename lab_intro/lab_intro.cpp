@@ -57,13 +57,13 @@ PNG grayscale(PNG image) {
 PNG createSpotlight(PNG image, int centerX, int centerY) {
   for (unsigned x = 0; x < image.width(); x++) {
     for (unsigned y = 0; y < image.height(); y++) {
-        HSLAPixel &pixel = image.getPixel(x, y);
-        double distance = sqrt((centerX-x)*(centerX-x)+(centerY-y)*(centerY-y));
+        HSLAPixel &pixel = image.getPixel(x, y);                    //pixel is naturally a pointer, so acceses memory location
+        double distance = sqrt((centerX-x)*(centerX-x)+(centerY-y)*(centerY-y));  //Absolute distance
         double percentage = distance*.005;
         if(distance<160)
-          pixel.l = (1.0-percentage)*pixel.l;
+          pixel.l = (1.0-percentage)*pixel.l;                       //Decreases luminance by a factor of distance*.005
         else
-          pixel.l = pixel.l*.2;
+          pixel.l = pixel.l*.2;                                     //After distance of 160 pixels, luminance is 20% initial value
 
     }
   }
@@ -85,14 +85,16 @@ PNG createSpotlight(PNG image, int centerX, int centerY) {
 PNG illinify(PNG image) {
   for (unsigned x = 0; x < image.width(); x++) {
     for (unsigned y = 0; y < image.height(); y++) {
-      HSLAPixel &pixel = image.getPixel(x, y);
-      if(pixel.h<329 && pixel.h>103)
+      HSLAPixel &pixel = image.getPixel(x, y);  //Same as before
+      if(pixel.h<=329 && pixel.h>=103)          //Illini blue between these values
        {
         pixel.h = 216;
        }
     else
+    /*11 was chosen for else statement because then you don't have to worry about
+    the 0/360 value of the color circle*/
        {
-        pixel.h = 11;
+        pixel.h = 11;                           //Illini orange
        }
 
       }
@@ -114,7 +116,8 @@ PNG illinify(PNG image) {
 * @return The watermarked image.
 */
 PNG watermark(PNG firstImage, PNG secondImage) {
-  if(firstImage.width()<secondImage.width()&& firstImage.height()<secondImage.height())   //This seems wrong
+  //Compares height/width to see if one image is smaller and compresses the bigger one
+  if(firstImage.width()<secondImage.width()&& firstImage.height()<secondImage.height())
   {
     secondImage.resize(firstImage.width(), firstImage.height());
   }
@@ -127,10 +130,10 @@ PNG watermark(PNG firstImage, PNG secondImage) {
     for (unsigned y = 0; y < firstImage.height(); y++) {
       HSLAPixel &pixel1 = firstImage.getPixel(x,y);
       HSLAPixel &pixel2 = secondImage.getPixel(x,y);
-      if(pixel2.l == 1.0)
+      if(pixel2.l == 1.0)                       //Checks if luminance is 100%
       {
-        pixel1.l = pixel1.l + .2;
-        if(pixel1.l > 1.0) {pixel1.l = 1.0;}
+        pixel1.l = pixel1.l + .2;               //Adds .2 to luminance of firstImage, next line caps at 100%
+        if(pixel1.l > 1.0) {pixel1.l = 1.0;}    //I chose to make this one line because it aids my reading
       }
 
     }
