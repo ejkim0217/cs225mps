@@ -14,10 +14,10 @@
 namespace cs225 {
   class HSLAPixel {
   public:
-    float h; /**< Hue of the pixel, in degrees [0, 360). */
-    float s; /**< Saturation of the pixel, [0, 1]. */
-    float l; /**< Luminance of the pixel, [0, 1]. */
-    float a; /**< Alpha of the pixel, [0, 1]. */
+    double h; /**< Hue of the pixel, in degrees [0, 360). */
+    double s; /**< Saturation of the pixel, [0, 1]. */
+    double l; /**< Luminance of the pixel, [0, 1]. */
+    double a; /**< Alpha of the pixel, [0, 1]. */
 
     /**
      * Constructs a default HSLAPixel.
@@ -36,7 +36,7 @@ namespace cs225 {
      * @param saturation Saturation value for the new pixel, [0, 1].
      * @param luminance Luminance value for the new pixel, [0, 1].
      */
-    HSLAPixel(float hue, float saturation, float luminance);
+    HSLAPixel(double hue, double saturation, double luminance);
 
     /**
      * Constructs an HSLAPixel with the given hue, saturation,
@@ -47,7 +47,7 @@ namespace cs225 {
      * @param luminance Luminance value for the new pixel, [0, 1].
      * @param alpha Alpha value for the new pixel, [0, 1].
      */
-    HSLAPixel(float hue, float saturation, float luminance, float alpha);
+    HSLAPixel(double hue, double saturation, double luminance, double alpha);
 
     HSLAPixel & operator=(HSLAPixel const & other);
     bool operator== (HSLAPixel const & other) const ;
