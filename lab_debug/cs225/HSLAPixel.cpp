@@ -38,6 +38,7 @@ namespace cs225 {
     this->s = other.s;
     this->l = other.l;
     this->a = other.a;
+    return *this;
   }
 
   bool HSLAPixel::operator== (HSLAPixel const & other) const {
