@@ -13,11 +13,11 @@ $(EXENAME) : $(OBJS)
 	$(LD) $(OBJS) $(LDFLAGS) -o $(EXENAME)
 
 main.o : main.cpp lab_intro.h cs225/PNG.h cs225/HSLAPixel.h
-	$(CXX) $(CXXFLAGS) main.cpp 
+	$(CXX) $(CXXFLAGS) main.cpp
 
 lab_intro.o : lab_intro.cpp lab_intro.h
 	$(CXX) $(CXXFLAGS) lab_intro.cpp
-	
+
 PNG.o : cs225/PNG.cpp cs225/PNG.h cs225/HSLAPixel.h cs225/lodepng/lodepng.h
 	$(CXX) $(CXXFLAGS) cs225/PNG.cpp
 
