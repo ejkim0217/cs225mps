@@ -209,25 +209,18 @@ void Image::scale(double factor)
 
 void Image::scale(unsigned w, unsigned h)
 {
-  unsigned int newWidth = h;
+  unsigned int newWidth = w;
   unsigned int newHeight = h;
-  double factor = h / width();
-
-  if(w > h)
-  {
-    newWidth = w;
-    newHeight = w;
-    factor = w / width();
-
-  }
+  double factor_w = w / width();
+  double factor_h = h / height();
   PNG *middleman = new PNG(newWidth, newHeight);
 
   for (unsigned x = 0; x < width(); x++) {
     for (unsigned y = 0; y < height(); y++) {
         HSLAPixel & oldPixel = getPixel(x, y);
 
-        for(unsigned i=x*factor; i <(x*(factor)+factor); i++){
-          for(unsigned j=y*factor; j < (y*(factor)+factor); j++){
+        for(unsigned i=x*factor_w; i <(x*(factor_w)+factor_w); i++){
+          for(unsigned j=y*factor_h; j < (y*(factor_h)+factor_h); j++){
             HSLAPixel & newPixel = middleman->getPixel(i, j);
             newPixel = oldPixel;
           }
