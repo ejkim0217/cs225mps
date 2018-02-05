@@ -207,28 +207,6 @@ void Image::scale(double factor)
     delete middleman;
 }
 
-/*void Image::scale(unsigned w, unsigned h)
-{
-  // Create a new vector to store the image data for the new (resized) image
-    unsigned int newWidth = w;
-    unsigned int newHeight = h;
-    HSLAPixel *newImageData = new HSLAPixel[newWidth * newHeight];
-
-      // Copy the current data to the new image data, using the existing pixel
-      // for coordinates within the bounds of the old image size
-      for (unsigned x = 0; x < newWidth; x++) {
-        for (unsigned y = 0; y < newHeight; y++) {
-          if (x < width() && y < height()) {
-            HSLAPixel & oldPixel = this->getPixel(x, y);
-            HSLAPixel & newPixel = newImageData[ (x + (y * newWidth)) ];
-            newPixel = oldPixel;
-          }
-        }
-      }
-
-      // Clear the existing image
-      delete[] newImageData;
-}*/
 void Image::scale(unsigned w, unsigned h)
 {
   unsigned int newWidth = h;
