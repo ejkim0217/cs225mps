@@ -4,14 +4,14 @@ using namespace cs225;
 
 void Image::lighten()
 {
-  for(unsigned int i=0; i<height(); i++)
+  for(unsigned int i=0; i<height(); i++)      //Loops through every row
   {
-    for(unsigned int j=0; j<width();j++)
+    for(unsigned int j=0; j<width();j++)      //Loops through every column
     {
-      HSLAPixel &image = getPixel(j, i);
-      if(image.l+.1 <= 1.0)
+      HSLAPixel &image = getPixel(j, i);      //Creates a reference variable
+      if(image.l+.1 <= 1.0)                   //Changes luminance by .1
         image.l = image.l +.1;
-      else
+      else                                    //Or sets to 1.0
           image.l = 1.0;
     }
   }
@@ -24,7 +24,7 @@ void Image::lighten(double amount)
     for(unsigned int j=0; j<width();j++)
     {
       HSLAPixel &image = getPixel(j, i);
-      if(image.l+amount <= 1.0)
+      if(image.l+amount <= 1.0)               //Changes luminace by an amount
         image.l = image.l + amount;
       else
         image.l = 1.0;
@@ -39,9 +39,9 @@ void Image::darken()
     for(unsigned int j=0; j<width();j++)
     {
       HSLAPixel &image = getPixel(j, i);
-      if(image.l-.1 >= 0)
+      if(image.l-.1 >= 0)                   //Decreases luminace by .1
         image.l = image.l -.1;
-      else
+      else                                  //Or sets to 0
         image.l = 0.0;
     }
   }
@@ -54,7 +54,7 @@ void Image::darken (double amount)
     for(unsigned int j=0; j<width();j++)
     {
       HSLAPixel &image = getPixel(j, i);
-      if(image.l-amount >= 0.0)
+      if(image.l-amount >= 0.0)             //Decreases luminance by amount
         image.l = image.l - amount;
       else
           image.l = 0.0;
@@ -69,9 +69,9 @@ void Image::saturate()
     for(unsigned int j=0; j<width();j++)
     {
       HSLAPixel &image = getPixel(j, i);
-      if(image.s+.1 <= 1.0)
+      if(image.s+.1 <= 1.0)               //Changes saturation by .1
         image.s = image.s +.1;
-      else
+      else                                //Changes saturation to 1
         image.s = 1.0;
     }
   }
@@ -84,7 +84,7 @@ void Image::saturate(double amount)
     for(unsigned int j=0; j<width();j++)
     {
       HSLAPixel &image = getPixel(j, i);
-      if(image.s+amount <= 1.0)
+      if(image.s+amount <= 1.0)           //Changes saturation by an amount
         image.s = image.s + amount;
       else
           image.s = 1.0;
@@ -99,7 +99,7 @@ void Image::desaturate()
     for(unsigned int j=0; j<width();j++)
     {
       HSLAPixel &image = getPixel(j, i);
-      if(image.s-.1 >= 0.0)
+      if(image.s-.1 >= 0.0)              //Changes saturation by -.1
         image.s = image.s -.1;
       else
         image.s = 0.0;
@@ -114,7 +114,7 @@ void Image::desaturate(double amount)
     for(unsigned int j=0; j<width();j++)
     {
       HSLAPixel &image = getPixel(j, i);
-      if(image.s-amount >= 0.0)
+      if(image.s-amount >= 0.0)           //Decreases saturation by an amount
         image.s = image.s - amount;
       else
         image.s = 0.0;
@@ -142,7 +142,7 @@ void Image::rotateColor(double degrees)
     {
       HSLAPixel &image = getPixel(j, i);
       image.h = image.h + degrees;
-      //Degrees chosen could be ridiculously large
+      //Degrees chosen could be ridiculously large, so have to adjust
       while(image.h > 360)
       {
         image.h = image.h - 360;
@@ -180,25 +180,34 @@ void Image::scale(double factor)
   // Create a new vector to store the image data for the new (resized) image
     unsigned int newWidth = width() * factor;
     unsigned int newHeight = height() * factor;
-    HSLAPixel *newImageData = new HSLAPixel[newWidth * newHeight];
+    PNG *middleman = new PNG(newWidth, newHeight);
 
-      // Copy the current data to the new image data, using the existing pixel
-      // for coordinates within the bounds of the old image size
-      for (unsigned x = 0; x < newWidth; x++) {
-        for (unsigned y = 0; y < newHeight; y++) {
-          if (x < width() && y < height()) {
-            HSLAPixel & oldPixel = this->getPixel(x, y);
-            HSLAPixel & newPixel = newImageData[ (x + (y * newWidth)) ];
-            newPixel = oldPixel;
+    for (unsigned x = 0; x < width(); x++) {
+      for (unsigned y = 0; y < height(); y++) {
+          HSLAPixel & oldPixel = getPixel(x, y);
+
+          for(unsigned i=x*factor; i <(x*(factor)+factor); i++){
+            for(unsigned j=y*factor; j < (y*(factor)+factor); j++){
+              HSLAPixel & newPixel = middleman->getPixel(i, j);
+              newPixel = oldPixel;
+            }
           }
+      }
+    }
+
+    resize(newWidth, newHeight);
+
+    for (unsigned x = 0; x < newWidth; x++) {
+      for (unsigned y = 0; y < newHeight; y++) {
+          HSLAPixel & oldPixel = getPixel(x, y);
+          HSLAPixel & newPixel = middleman->getPixel(x, y);
+          oldPixel = newPixel;
         }
       }
-
-      // Clear the existing image
-      delete[] newImageData;
+    delete middleman;
 }
 
-void Image::scale(unsigned w, unsigned h)
+/*void Image::scale(unsigned w, unsigned h)
 {
   // Create a new vector to store the image data for the new (resized) image
     unsigned int newWidth = w;
@@ -219,4 +228,43 @@ void Image::scale(unsigned w, unsigned h)
 
       // Clear the existing image
       delete[] newImageData;
+}*/
+void Image::scale(unsigned w, unsigned h)
+{
+  unsigned int newWidth = h;
+  unsigned int newHeight = h;
+  double factor = h / width();
+
+  if(w > h)
+  {
+    newWidth = w;
+    newHeight = w;
+    factor = w / width();
+
+  }
+  PNG *middleman = new PNG(newWidth, newHeight);
+
+  for (unsigned x = 0; x < width(); x++) {
+    for (unsigned y = 0; y < height(); y++) {
+        HSLAPixel & oldPixel = getPixel(x, y);
+
+        for(unsigned i=x*factor; i <(x*(factor)+factor); i++){
+          for(unsigned j=y*factor; j < (y*(factor)+factor); j++){
+            HSLAPixel & newPixel = middleman->getPixel(i, j);
+            newPixel = oldPixel;
+          }
+        }
+    }
+  }
+
+  resize(newWidth, newHeight);
+
+  for (unsigned x = 0; x < newWidth; x++) {
+    for (unsigned y = 0; y < newHeight; y++) {
+        HSLAPixel & oldPixel = getPixel(x, y);
+        HSLAPixel & newPixel = middleman->getPixel(x, y);
+        oldPixel = newPixel;
+      }
+    }
+  delete middleman;
 }
