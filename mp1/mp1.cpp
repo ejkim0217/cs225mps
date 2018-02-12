@@ -15,7 +15,7 @@ void rotate(std::string inputFile, std::string outputFile) {
 
   PNG *output = new PNG(width, height);
 
-  for(unsigned int i=0; i<width; i++)
+for(unsigned int i=0; i<width; i++)
   {
     for(unsigned int j=0; j<height;j++)
     {
@@ -30,7 +30,21 @@ void rotate(std::string inputFile, std::string outputFile) {
 PNG myArt(unsigned int width, unsigned int height) {
   PNG png(width, height);
   // Part 3
+    unsigned int mid_h = height/2;
+    unsigned int mid_w = width /2;
 
+    for(unsigned i=0; i<height; i++)
+    {
+      for(unsigned int j=0; j<width; j++)
+      {
+        HSLAPixel *pixel = png.getPixel(i,j);
+        pixel->h = 310;
+        pixel->s = 1.0;
+        pixel->l = .5;
+        pixel->a = 1.0;
+      }
+    }
+/*
   for(unsigned int i=0; i<width; i++)
   {
     for(unsigned int j=0; j<height; j++)
@@ -78,7 +92,7 @@ PNG myArt(unsigned int width, unsigned int height) {
       pixel->a = 1.0;
     }
   }
-
+*/
 
   return png;
 }
