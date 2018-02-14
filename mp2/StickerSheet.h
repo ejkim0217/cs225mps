@@ -9,10 +9,13 @@
 class StickerSheet{
 
 public:
+  //Constructors and Rule of Three
   StickerSheet(const Image &picture, unsigned max);
   ~StickerSheet();
   StickerSheet(const StickerSheet &other);
   const StickerSheet &operator=(const StickerSheet &other);
+
+  //Interesting functions
   void changeMaxStickers(unsigned max);
   int addSticker(Image &sticker, unsigned x, unsigned y);
   bool translate (unsigned index, unsigned x, unsigned y);
@@ -22,9 +25,9 @@ public:
 private:
   Image* base_;
   Image** arr_;
-  unsigned int* xarr_;
-  unsigned int* yarr_;
-  unsigned int max_;
+  unsigned* xarr_;
+  unsigned* yarr_;
+  unsigned max_;
 };
 
 #endif
