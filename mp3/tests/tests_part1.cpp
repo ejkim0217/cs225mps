@@ -1,3 +1,4 @@
+// v2
 #include "../cs225/catch/catch.hpp"
 #include "tests_helper.h"
 
@@ -15,13 +16,13 @@ using namespace cs225;
 
 
 TEST_CASE("List::insertFront", "[weight=1][part=1]") {
-  List<int> list;
+  List<unsigned> list;
   for (unsigned i = 0; i < 10; i++) { list.insertFront(i); }
   REQUIRE(list.size() == 10);
 }
 
 TEST_CASE("List::insertBack", "[weight=1][part=1]") {
-  List<int> list;
+  List<unsigned> list;
   for (unsigned i = 0; i < 10; i++) { list.insertBack(i); }
   REQUIRE(list.size() == 10);
 }
