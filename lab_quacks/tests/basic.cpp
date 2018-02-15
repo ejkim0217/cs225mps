@@ -95,6 +95,7 @@ TEST_CASE("isBalanced")
 
         for (std::string & s : strings)
         {
+            INFO(s);
             REQUIRE(QuackFun::isBalanced(stringToQueue(s)) == true);
         }
     }
@@ -114,6 +115,7 @@ TEST_CASE("isBalanced")
 
         for (std::string & s : strings)
         {
+            INFO(s);
             REQUIRE(QuackFun::isBalanced(stringToQueue(s)) == false);
         }
     }
