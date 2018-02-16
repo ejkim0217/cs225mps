@@ -47,6 +47,10 @@ $(TEST): $(patsubst %.o, $(OBJS_DIR)/%.o, $(OBJS_TEST))
 
 # Include automatically generated dependencies
 -include $(OBJS_DIR)/*.d
+-include $(OBJS_DIR)/cs225/*.d
+-include $(OBJS_DIR)/cs225/catch/*.d
+-include $(OBJS_DIR)/cs225/lodepng/*.d
+-include $(OBJS_DIR)/tests/*.d
 
 clean:
 	rm -rf $(EXE) $(TEST) $(OBJS_DIR) $(CLEAN_RM)
