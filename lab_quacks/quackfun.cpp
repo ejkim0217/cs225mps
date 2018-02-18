@@ -25,16 +25,22 @@ namespace QuackFun {
 template <typename T>
 T sum(stack<T>& s)
 {
-
     // Your code here
-    return T(); // stub return value (0 for primitive types). Change this!
-                // Note: T() is the default value for objects, and 0 for
-                // primitive types
+    if(s.empty() == true)
+      return T();
+    T x = s.top();
+    s.pop();
+    T y = sum(s);
+    s.push(x);
+    return x + y;
+     // stub return value (0 for primitive types). Change this!
+     // Note: T() is the default value for objects, and 0 for
+    // primitive types
 }
 
 /**
- * Checks whether the given string (stored in a queue) has balanced brackets. 
- * A string will consist of 
+ * Checks whether the given string (stored in a queue) has balanced brackets.
+ * A string will consist of
  * square bracket characters, [, ], and other characters. This function will return
  * true if and only if the square bracket characters in the given
  * string are balanced. For this to be true,
@@ -51,7 +57,25 @@ bool isBalanced(queue<char> input)
 {
 
     // @TODO: Make less optimistic
-    return true;
+  stack<char> s;
+  while(!input.empty()){
+    if(input.front() == ']' || input.front() == '[')
+      s.push(input.front());
+    input.pop();
+  }
+  int count = 0;
+  while(!s.empty()){
+    if(']'== s.top())
+      count = count +1;
+    else if('['== s.top() && count > 0)
+      count = count -1;
+    else if('[' == s.top() && count <= 0)
+      return false;
+    s.pop();
+  }
+  if (count > 0)
+    return false;
+  return true;
 }
 
 /**
@@ -70,9 +94,41 @@ template <typename T>
 void scramble(queue<T>& q)
 {
     stack<T> s;
-    // optional: queue<T> q2;
+    queue<T> q2;
+    q2.push(q.front());
+    q.pop();
+    int count = 2;
 
-    // Your code here
+    while(!q.empty()){
+      if(count%2 == 0){
+        for(int i=0; i<count; i++){
+          if(!q.empty()){
+            s.push(q.front());
+            q.pop();
+          }
+        }
+        for(int i=0; i<count; i++){
+          if(!s.empty()){
+            q2.push(s.top());
+            s.pop();
+          }
+        }
+      }
+      else{
+        for(int i=0; i<count; i++){
+          if(!q.empty()){
+            q2.push(q.front());
+            q.pop();
+          }
+        }
+      }
+    count = count +1;
+    }
+
+    while(!q2.empty()){
+      q.push(q2.front());
+      q2.pop();
+    }
 }
 
 /**

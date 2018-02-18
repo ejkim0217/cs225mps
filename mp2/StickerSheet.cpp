@@ -141,7 +141,6 @@ Image StickerSheet::render() const{
   //Puts in background image
   Image *render = new Image();
   render->resize(max_width, max_height);
-
   for(unsigned x=0; x<base_->width(); x++){
     for(unsigned y=0; y<base_->height(); y++){
       render->getPixel(x,y) = base_->getPixel(x,y);
