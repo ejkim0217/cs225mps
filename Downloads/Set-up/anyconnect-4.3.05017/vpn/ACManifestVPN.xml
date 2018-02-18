@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vpn rev="1.0">
+  <file version="4.3.05017" id="VPNCore" is_core="yes" type="script" action="install">
+    <uri>binaries/vpnsetup.sh</uri>
+    <display-name>AnyConnect Secure Mobility Client</display-name>
+  </file>
+</vpn>

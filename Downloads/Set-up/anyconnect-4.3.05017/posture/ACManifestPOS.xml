@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vpn rev="1.0">
+  <file version="4.3.05017" id="Posture" is_core="no" type="script" action="install" module="posture">
+    <uri>binaries/posturesetup.sh</uri>
+    <display-name>AnyConnect Posture</display-name>
+  </file>
+</vpn>
