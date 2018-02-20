@@ -10,6 +10,7 @@
 template <class T>
 List<T>::~List() {
   /// @todo Graded in MP3.1
+  clear();
 }
 
 /**
@@ -19,7 +20,15 @@ List<T>::~List() {
 template <class T>
 void List<T>::clear() {
   /// @todo Graded in MP3.1
-}
+  while(head_!= NULL){
+      ListNode *temp = head_;
+      head_ = head_->next;
+      delete temp;
+      temp = NULL;
+    }
+  head_ = NULL;
+  tail_ = NULL;
+  }
 
 /**
  * Inserts a new node at the front of the List.
@@ -30,6 +39,20 @@ void List<T>::clear() {
 template <class T>
 void List<T>::insertFront(T const & ndata) {
   /// @todo Graded in MP3.1
+  if(head_ != NULL){
+    ListNode* p = new ListNode(ndata);
+    head_->prev = p;
+    p->next = head_;
+    p->prev = NULL;
+    head_ = p;
+  }
+  else
+  {
+    head_ = new ListNode(ndata);
+    head_->next = NULL;
+    head_->prev = NULL;
+  }
+  length_ = length_ + 1;
 }
 
 /**
@@ -41,6 +64,19 @@ void List<T>::insertFront(T const & ndata) {
 template <class T>
 void List<T>::insertBack(const T & ndata) {
   /// @todo Graded in MP3.1
+  if(tail_ != NULL){
+    ListNode *p = new ListNode(ndata);
+    p->next = NULL;
+    p->prev = tail_;
+    tail_->next = p;
+    tail_ = p;
+  }
+  else{
+    tail_ = new ListNode(ndata);
+    tail_->next = NULL;
+    tail_->prev = NULL;
+  }
+  length_ = length_ + 1;
 }
 
 /**
@@ -65,6 +101,15 @@ void List<T>::reverse() {
 template <class T>
 void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
   /// @todo Graded in MP3.1
+  ListNode*& temp1 = startPoint;
+  ListNode*& temp2 = endPoint;
+  while(temp1 != temp2 || temp1->next != temp2){
+    ListNode* hold = temp1;
+    temp1 = temp2;
+    temp2 = hold;
+    temp1 = temp2->next;
+    temp2 = temp1->prev;
+  }
 }
 
 /**
@@ -74,8 +119,22 @@ void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
  * @param n The size of the blocks in the List to be reversed.
  */
 template <class T>
-void List<T>::reverseNth(int n) {
+void List<T>::reverseNth(int n){
   /// @todo Graded in MP3.1
+  ListNode* endPoint = head_;
+  int count = 0;
+  while(count <= length_){
+    if((count+n) > length_)
+      reverse(head_, tail_);
+    for(int i=0; i<n; i++){
+      endPoint = endPoint->next;
+      if(endPoint == tail_)
+        break;
+    }
+    reverse(head_, endPoint);
+    head_ = endPoint->next;
+    count = count +n;
+  }
 }
 
 /**
