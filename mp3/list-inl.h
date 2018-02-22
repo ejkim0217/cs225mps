@@ -121,11 +121,34 @@ void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
   /// @todo Graded in MP3.1
   ListNode* temp1 = startPoint;
   ListNode* temp2 = endPoint;
-  while(temp1 != temp2 && temp1->next != temp2){
+  if(startPoint == NULL || endPoint == NULL){
+    return;
+  }
+  // if(startPoint->next == endPoint || endPoint->prev == startPoint){
+  //   endPoint->next = startPoint;
+  //   endPoint->prev = NULL;
+  //   startPoint->next = startPoint->;
+  //   startPoint->prev = endPoint;
+  //   endPoint = temp1;
+  //   startPoint = temp2;
+  //   return;
+  // }
+  while(temp1 != temp2){
     ListNode* hold1 = temp1->prev;
     ListNode* hold2 = temp1->next;
     ListNode* hold3 = temp2->prev;
     ListNode* hold4 = temp2->next;
+    if(temp1->next == temp2){
+      temp2->next = temp1;
+      temp2->prev = hold1;
+      temp1->prev = temp2;
+      temp1->next = hold4;
+      if(hold1 != NULL)
+        hold1->next = temp2;
+      if(hold4 != NULL)
+        hold4->prev = temp1;
+      break;
+    }
     temp1->next = hold4;
     temp1->prev = hold3;
     temp2->next = hold2;
@@ -159,19 +182,23 @@ void List<T>::reverseNth(int n){
     ListNode* endPoint = startPoint;
     if((count+n) > length_){   //Edge case where n > # of elements remaining
       reverse(startPoint, tail_);
-      if(count == 0)          //Edge case where n > length_
-        head_ = tail_;
+      if(count == 0){          //Edge case where n > length_
+        tail_ = endPoint;
+        head_ = startPoint;
+      }
       break;
     }
     for(int i=1; i<n; i++){   //Loops through n nodes
       endPoint = endPoint->next;  //Updates endPoint node to node n away
-      if(endPoint == tail_)     //If you get to tail, it breaks (edge case)
-        break;
     }
     reverse(startPoint, endPoint);   //Reverse desired endpoints
     if(count == 0)                //Sets new head node
       head_ = startPoint;
-    startPoint = endPoint->next;  //Ada
+    if(startPoint == tail_)     //If you get to tail, it breaks (edge case)
+        break;
+    startPoint = endPoint->next;  //Advances the pointer to the next set
+    if(startPoint == NULL)
+      break;
     count = count +n;
   }
   startPoint = head_;
