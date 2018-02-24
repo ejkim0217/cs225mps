@@ -355,8 +355,9 @@ typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) 
   /// @todo Graded in MP3.2
   ListNode *merger = NULL;
   ListNode *temp = first;
-  ListNode *head = NULL;
+  ListNode *header = NULL;
   ListNode *holder = NULL;
+  ListNode *equalTemp = NULL;
 
   if(first == NULL){    //Empty list cases
     return second;
@@ -367,25 +368,28 @@ typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) 
 
   if(temp->data < second->data){   //These ifs give head value
     merger = temp;
-    head = temp;
+    header = temp;
     temp = temp->next;
   }
-  if(temp->data > second->data && head == NULL){
+  if(second->data < temp->data && header == NULL){
     merger= second;
-    head = second;
+    header = second;
     second = second->next;
   }
-  if(temp->data == second->data && head ==NULL){
-    holder = merger;
+  if(temp->data == second->data && header ==NULL){
+    holder = temp->next;
     merger = temp;
     merger->next = second;
     merger = second;
-    merger->prev = holder;
-    head = temp;
+    merger->prev = temp;
+    header = temp;
+    second = second->next;
+    temp = holder;
+
   }
 
-while(second != NULL && temp!= NULL)
-  while(second != NULL && temp!= NULL){  //If second list empty, just returns first
+while(second != NULL || temp!= NULL)
+  while(second != NULL || temp!= NULL){  //If second list empty, just returns first
     if(temp == NULL){
       holder = merger;
       merger->next = second;
@@ -410,7 +414,7 @@ while(second != NULL && temp!= NULL)
       temp = temp->next;
       break;
     }
-    if(temp->data > second->data){
+    if(second->data < temp->data){
       holder = merger;
       merger->next = second;
       merger = second;
@@ -419,6 +423,7 @@ while(second != NULL && temp!= NULL)
       break;
     }
     if(temp->data == second->data){
+      equalTemp = temp->next;
       holder = merger;
       merger->next = temp;
       merger = temp;
@@ -427,12 +432,12 @@ while(second != NULL && temp!= NULL)
       merger->next = second;
       merger = second;
       merger->prev = holder;
-      temp = temp->next;
+      temp = equalTemp;
       second = second->next;
       break;
     }
   }
-  first = head;
+  first = header;
   return first;
 }
 
