@@ -212,6 +212,7 @@ class BinaryTree
     void inOrder(Node *subRoot, vector<T>& treeVector);
 
     bool isOrderedHelper(Node *subroot) const;
+    int sumDistancesHelper(Node* subroot, int height) const;
 
     Node* root;
 };
