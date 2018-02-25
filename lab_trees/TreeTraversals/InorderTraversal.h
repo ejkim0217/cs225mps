@@ -26,16 +26,14 @@ class InorderTraversal : public TreeTraversal<T> {
      */
     InorderTraversal(typename BinaryTree<T>::Node* root)
 	    : root(root)
-    {
-			if(root == NULL){
-				return;
-			}
-			stack.push(root);
-			InorderTraversal(root->left);
-			typename BinaryTree<T>::Node* top = root.pop();
-			cout << top->elem << " ";
-			InorderTraversal(top->right);
-			stack.pop();
+    { //TODO
+      stack.push(root);
+			//my code
+      typename BinaryTree<T>::Node* temp = root->left;
+      while(temp != NULL){
+        stack.push(temp);
+        temp = temp->left;
+      }
     }
 
     /**
@@ -71,7 +69,24 @@ class InorderTraversal : public TreeTraversal<T> {
      */
     void add(typename BinaryTree<T>::Node *& treeNode) {
       // your code here
-      return;
+      if(treeNode->right != NULL){
+        typename BinaryTree<T>::Node *right = treeNode->right;
+        while(right != NULL){
+          stack.push(right);
+          right = right->left;
+        }
+
+      }
+
+			// if(treeNode == NULL && !stack.empty()){
+			// 	typename BinaryTree<T>::Node *top = treeNode.pop();
+			// 	add(top->right);
+			// }
+			// if(treeNode == NULL && stack.empty())
+			// 	return;
+			// stack.push(treeNode);
+			// add(treeNode->left);
+			// return;
     }
 
     /**
