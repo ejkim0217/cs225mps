@@ -75,7 +75,6 @@ class InorderTraversal : public TreeTraversal<T> {
           stack.push(right);
           right = right->left;
         }
-
       }
 
 			// if(treeNode == NULL && !stack.empty()){
