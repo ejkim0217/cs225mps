@@ -371,21 +371,24 @@ typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) 
     header = temp;
     temp = temp->next;
   }
-  if(second->data < temp->data && header == NULL){
-    merger= second;
-    header = second;
-    second = second->next;
+  if(temp != NULL){
+    if(second->data < temp->data && header == NULL){
+      merger= second;
+      header = second;
+      second = second->next;
+    }
   }
-  if(temp->data == second->data && header ==NULL){
-    holder = temp->next;
-    merger = temp;
-    merger->next = second;
-    merger = second;
-    merger->prev = temp;
-    header = temp;
-    second = second->next;
-    temp = holder;
-
+  if(temp != NULL && second != NULL){
+    if(temp->data == second->data && header ==NULL){
+      holder = temp->next;
+      merger = temp;
+      merger->next = second;
+      merger = second;
+      merger->prev = temp;
+      header = temp;
+      second = second->next;
+      temp = holder;
+    }
   }
 
 while(second != NULL || temp!= NULL)
@@ -466,5 +469,15 @@ void List<T>::sort() {
 template <class T>
 typename List<T>::ListNode* List<T>::mergesort(ListNode * start, int chainLength) {
   /// @todo Graded in MP3.2
-  return NULL;
+  if(chainLength == 1){
+    return start;
+  }
+  int half = chainLength/2;
+  ListNode* list1 = start;
+  ListNode* list2 = split(list1, half);
+  list1 = mergesort(list1, half);
+  list2 = mergesort(list2, chainLength - half);
+
+  list1 = merge(list1, list2);
+  return list1;
 }

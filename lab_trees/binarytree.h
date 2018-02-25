@@ -86,7 +86,7 @@ class BinaryTree
     /**
      * @return The root of the binary tree
      */
-    Node* getRoot() const;  
+    Node* getRoot() const;
 
     /**
      * This lab deals with the following six helper functions:
@@ -130,6 +130,7 @@ class BinaryTree
     bool isOrderedRecursive() const;
 
 
+
     /**
      * creates vectors of all the possible paths from the root of the tree to any leaf
      * node and adds it to another vector.
@@ -158,6 +159,7 @@ class BinaryTree
       * @param treeVector stores nodes in order
      */
     void inOrder(vector <T>& treeVector );
+
 
   private:
 
@@ -208,6 +210,8 @@ class BinaryTree
      * @param treeVector stores nodes in order
      */
     void inOrder(Node *subRoot, vector<T>& treeVector);
+
+    bool isOrderedHelper(Node *subroot) const;
 
     Node* root;
 };

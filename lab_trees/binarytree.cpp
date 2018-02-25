@@ -78,6 +78,24 @@ template <typename T>
 void BinaryTree<T>::mirror()
 {
     //your code here
+    if(root == NULL){
+      return;
+    }
+    Node *realroot = root;
+    Node *temp = root->left;
+
+    root->left = root->right;   //I flippedity flip here
+    root->right = temp;
+
+    root = root->right;   //Going down the previously left subtree
+    mirror();
+
+    root = realroot;    //Going down the right subtree
+    root = root->left;
+    mirror();
+
+    root = realroot;    //Set root back to original value
+    return;
 }
 
 /**
@@ -88,9 +106,8 @@ void BinaryTree<T>::mirror()
  */
 template <typename T>
 bool BinaryTree<T>::isOrderedIterative() const
-{
-    // your code here
-    return false;
+{    // your code here
+  return true;
 }
 
 /**
@@ -102,9 +119,35 @@ bool BinaryTree<T>::isOrderedIterative() const
 template <typename T>
 bool BinaryTree<T>::isOrderedRecursive() const
 {
-
     // your code here
-    return false;
+    return isOrderedHelper(root);
+}
+
+//isOrderedRecursive helper
+template <typename T>
+bool BinaryTree<T>::isOrderedHelper(Node *subroot)const {
+  if(subroot->right == NULL && subroot->left == NULL)
+    return true;
+  if(subroot->right == NULL){
+    if(subroot->left->elem > subroot->elem)
+      return false;
+    return isOrderedHelper(subroot->left);
+  }
+  else if(subroot->left == NULL){
+    if(subroot->right->elem < subroot->elem)
+      return false;
+    return isOrderedHelper(subroot->right);
+  }
+  else{
+    if(subroot->left->elem > subroot->elem)
+      return false;
+    bool left = isOrderedHelper(subroot->left);
+    if(subroot->right->elem < subroot->elem)
+      return false;
+    bool right = isOrderedHelper(subroot->right);
+    return (left && right);
+  }
+
 }
 
 /**
@@ -135,5 +178,3 @@ int BinaryTree<T>::sumDistances() const
     // your code here
     return -1;
 }
-
-
