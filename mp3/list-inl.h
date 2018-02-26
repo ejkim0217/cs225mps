@@ -46,17 +46,7 @@ void List<T>::insertFront(T const & ndata) {
     p->prev = NULL;
     head_ = p;
   }
-  // else if(head_ != NULL && tail_ == NULL){
-  //   ListNode* p = new ListNode(ndata);
-  //   head_->prev = p;
-  //   p->next = head_;
-  //   p->prev = NULL;
-  //   tail_ = head_;
-  //   head_ = p;
-  //   head_->next = tail_;
-  // }
-  else
-  {
+  else{
     head_ = new ListNode(ndata);
     head_->next = NULL;
     head_->prev = NULL;
@@ -117,15 +107,6 @@ void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
   if(startPoint == NULL || endPoint == NULL || startPoint == endPoint){   //A null or single node list
     return;
   }
-  // if(startPoint->next == endPoint || endPoint->prev == startPoint){
-  //   endPoint->next = startPoint;
-  //   endPoint->prev = NULL;
-  //   startPoint->next = startPoint->;
-  //   startPoint->prev = endPoint;
-  //   endPoint = temp1;
-  //   startPoint = temp2;
-  //   return;
-  // }
   while(temp1 != temp2){
     ListNode* hold1 = temp1->prev;  //Series of ListNodes that preserve desired pointer addresses
     ListNode* hold2 = temp1->next;

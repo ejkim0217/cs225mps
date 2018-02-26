@@ -174,10 +174,23 @@ template <typename T>
 void BinaryTree<T>::printPaths(vector<vector<T> > &paths) const
 {
     // your code here
-
+    vector<T> path;
+    printPathsHelper(paths, path, root);
+}
+template <typename T>
+void BinaryTree<T>::printPathsHelper(vector<vector<T>> &paths, vector<T> path, Node *subroot) const{
+  if(subroot == NULL)
+    return;
+  if(subroot->left == NULL && subroot->right == NULL){
+    path.push_back(subroot->elem);
+    paths.push_back(path);
+    return;
+  }
+  path.push_back(subroot->elem);
+  printPathsHelper(paths, path, subroot->left);
+  printPathsHelper(paths, path, subroot->right);
 
 }
-
 /**
  * Each node in a tree has a distance from the root node - the depth of that
  * node, or the number of edges along the path from that node to the root. This

@@ -213,6 +213,7 @@ class BinaryTree
 
     bool isOrderedHelper(Node *subroot) const;
     int sumDistancesHelper(Node* subroot, int height) const;
+    void printPathsHelper(vector<vector<T>>& paths, vector<T> path, Node *subroot) const;
 
     Node* root;
 };
