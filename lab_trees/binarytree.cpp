@@ -138,19 +138,19 @@ bool BinaryTree<T>::isOrderedRecursive() const
 //isOrderedRecursive helper
 template <typename T>
 bool BinaryTree<T>::isOrderedHelper(Node *subroot)const {
-  if(subroot->right == NULL && subroot->left == NULL)
+  if(subroot->right == NULL && subroot->left == NULL)   //leaf node
     return true;
-  if(subroot->right == NULL){
+  if(subroot->right == NULL){                         //Left child only
     if(subroot->left->elem > subroot->elem)
       return false;
     return isOrderedHelper(subroot->left);
   }
-  else if(subroot->left == NULL){
+  else if(subroot->left == NULL){                     //right child only
     if(subroot->right->elem < subroot->elem)
       return false;
     return isOrderedHelper(subroot->right);
   }
-  else{
+  else{                                               //Full children for node
     if(subroot->left->elem > subroot->elem)
       return false;
     bool left = isOrderedHelper(subroot->left);
