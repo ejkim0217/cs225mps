@@ -53,7 +53,7 @@ void decoder::decodeFile(const string& inputName, const string& treeName,
     BinaryFileReader input(inputName);
     BinaryFileReader treeIn(treeName);
     HuffmanTree tree(treeIn);
-
+    tree.print(cout);
     ofstream output(outputName);
     output << tree.decodeFile(input);
 }

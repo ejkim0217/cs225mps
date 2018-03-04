@@ -76,16 +76,6 @@ class InorderTraversal : public TreeTraversal<T> {
           right = right->left;
         }
       }
-
-			// if(treeNode == NULL && !stack.empty()){
-			// 	typename BinaryTree<T>::Node *top = treeNode.pop();
-			// 	add(top->right);
-			// }
-			// if(treeNode == NULL && stack.empty())
-			// 	return;
-			// stack.push(treeNode);
-			// add(treeNode->left);
-			// return;
     }
 
     /**
