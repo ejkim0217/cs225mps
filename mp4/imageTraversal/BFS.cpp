@@ -19,8 +19,17 @@ using namespace cs225;
  * @param tolerance If the current point is too different (difference larger than tolerance) with the start point,
  * it will not be included in this BFS
  */
-BFS::BFS(const PNG & png, const Point & start, double tolerance) {  
+BFS::BFS(const PNG & png, const Point & start, double tolerance) {
   /** @todo [Part 1] */
+  pngbfs = png;
+  startbfs = start;
+  tolerancebfs = tolerance;
+  q.enqueue(start);
+  for(i=0; i<png.width; i++){
+    for(j=0; j<png.height; j++){
+      list[i][j] = 0;
+    }
+  }
 }
 
 /**
@@ -28,7 +37,7 @@ BFS::BFS(const PNG & png, const Point & start, double tolerance) {
  */
 ImageTraversal::Iterator BFS::begin() {
   /** @todo [Part 1] */
-  return ImageTraversal::Iterator();
+  return ImageTraversal::Iterator(startbfs);
 }
 
 /**
@@ -44,6 +53,23 @@ ImageTraversal::Iterator BFS::end() {
  */
 void BFS::add(const Point & point) {
   /** @todo [Part 1] */
+  if(point.x < pngdfs.width_){      //Might have to be pngdfs.width_ -1
+    Point right(point.x+1, point.y);
+    q.enqueue(right);
+  }
+  if(point.y < pngdfs.height_){
+    Point down(point.x, point.y+1);
+    q.enqueue(down);
+  }
+  if(point.x > 0){
+    Point left(point.x-1, point.y);
+    q.enqueue(left);
+  }
+  if(point.y > 0){
+    Point up(point.x, point.y -1);
+    q.enqueue(up);
+  }
+
 }
 
 /**
@@ -51,7 +77,13 @@ void BFS::add(const Point & point) {
  */
 Point BFS::pop() {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  Point top = q.front();
+  while(list[top.x][top.y] == 1){
+    q.dequeue();
+    top = q.front()
+  }
+  list[top.x][top.y] = 1;
+  return top;
 }
 
 /**

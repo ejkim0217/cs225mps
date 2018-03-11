@@ -14,7 +14,7 @@ template <class K, class V>
 AVLTree<K, V>::AVLTree()
     : root(NULL), _out(&std::cout)
 {
-    
+
 }
 
 template <class K, class V>

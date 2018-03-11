@@ -234,6 +234,7 @@ class AVLTree
     vector<string> functionCalls;
     /** This variable gets the inorder traversal of the AVL tree. **/
     vector<K> inorder;
+
 };
 
 #include "avltree_given.cpp"
