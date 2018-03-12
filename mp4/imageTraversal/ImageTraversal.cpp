@@ -28,19 +28,21 @@ double ImageTraversal::calculateDelta(const HSLAPixel & p1, const HSLAPixel & p2
   return sqrt( (h*h) + (s*s) + (l*l) );
 }
 
+double ImageTraversal::getcalculateDelta(HSLAPixel & p1, HSLAPixel & p2){
+  return calculateDelta(p1, p2);
+}
 /**
  * Default iterator constructor.
  */
 ImageTraversal::Iterator::Iterator() {
   /** @todo [Part 1] */
-  traversal = NULL
-  current = NULL;
+  traversal = NULL;
 }
 
-ImageTraversal::Iterator::Iterator(ImageTraversal*traversal, Point * start){
-  traversal_ = traversal;
+ImageTraversal::Iterator::Iterator(ImageTraversal*traversalold){
+  traversal = traversalold;
 }
-ImageTraversal::ImageTraversal(){}
+
 /**
  * Iterator increment opreator.
  *
@@ -48,6 +50,12 @@ ImageTraversal::ImageTraversal(){}
  */
 ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
   /** @todo [Part 1] */
+  if(!traversal->empty()){
+    current = traversal->pop();
+    traversal->add(current);
+    if(traversal->empty())
+      traversal = NULL;
+    }
   return *this;
 }
 
@@ -58,7 +66,7 @@ ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
  */
 Point ImageTraversal::Iterator::operator*() {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  return traversal->peek();
 }
 
 /**
@@ -68,5 +76,16 @@ Point ImageTraversal::Iterator::operator*() {
  */
 bool ImageTraversal::Iterator::operator!=(const ImageTraversal::Iterator &other) {
   /** @todo [Part 1] */
-  return false;
+  bool thisEmpty = false;
+  bool otherEmpty = false;
+
+  if (traversal == NULL) { thisEmpty = true; }
+  if (other.traversal == NULL) { otherEmpty = true; }
+
+  if (!thisEmpty)  { thisEmpty = traversal->empty(); }
+  if (!otherEmpty) { otherEmpty = other.traversal->empty(); }
+
+  if (thisEmpty && otherEmpty) return false; // both empty then the traversals are equal, return true
+  else if ((!thisEmpty)&&(!otherEmpty)) return (traversal != other.traversal); //both not empty then compare the traversals
+  else return true; // one is empty while the other is not, return true
 }

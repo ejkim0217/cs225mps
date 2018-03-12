@@ -22,21 +22,24 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance) {
   pngdfs = png;
   startdfs = start;
   tolerancedfs = tolerance;
-  s.push(start);
-  for(i=0; i<png.width; i++){
-    for(j=0; j<png.height; j++){
+  s.push(startdfs);
+  list = new int*[png.width()];
+  for(unsigned i=0; i<png.width(); i++){
+    list[i] = new int[png.height()];
+    for(unsigned j=0; j<png.height(); j++){
       list[i][j] = 0;
     }
   }
+  list[startdfs.x][startdfs.y] = 1;
 }
 
 /**
  * Returns an iterator for the traversal starting at the first point.
  */
 ImageTraversal::Iterator DFS::begin() {
-  /** @todo [Part 1] */  
-  ImageTraversal* traversal = new ImageTraversal();
-  return ImageTraversal::Iterator(*traversal, startdfs);
+  /** @todo [Part 1] */
+  ImageTraversal* traversal = new DFS(pngdfs, startdfs, tolerancedfs);
+  return ImageTraversal::Iterator(traversal);
 }
 
 /**
@@ -52,22 +55,38 @@ ImageTraversal::Iterator DFS::end() {
  */
 void DFS::add(const Point & point) {
   /** @todo [Part 1] */
-  if(point.x < pngdfs.width_-1){
-    Point right(point.x+1, point.y);
-    if(right != )
+  HSLAPixel origin = pngdfs.getPixel(startdfs.x, startdfs.y);
+  if(point.x < (pngdfs.width()-1)){
+    double real_tolr = getcalculateDelta(pngdfs.getPixel(point.x+1, point.y), origin);
+    if(real_tolr < tolerancedfs && list[point.x+1][point.y] == 0){
+      Point right(point.x+1, point.y);
       s.push(right);
+      list[right.x][right.y] = 1;
+    }
   }
-  if(point.y < pngdfs.height_ -1){
-    Point down(point.x, point.y+1);
-    s.push(down);
+  if(point.y < (pngdfs.height() -1)){
+    double real_told = getcalculateDelta(pngdfs.getPixel(point.x, point.y+1), origin);
+    if(real_told< tolerancedfs && list[point.x][point.y+1] == 0){
+      Point down(point.x, point.y+1);
+      s.push(down);
+      list[down.x][down.y] = 1;
+    }
   }
-  if(point.x > 0){
-    Point left(point.x-1, point.y);
-    s.push(left);
+  if(point.x > 0 && point.x <= (pngdfs.width()-1) ){
+    double real_toll = getcalculateDelta(pngdfs.getPixel(point.x-1, point.y), origin);
+    if(real_toll < tolerancedfs && list[point.x-1][point.y] == 0){
+      Point left(point.x-1, point.y);
+      s.push(left);
+      list[left.x][left.y] = 1;
+    }
   }
-  if(point.y > 0){
-    Point up(point.x, point.y -1);
-    s.push(up);
+  if(point.y > 0 && point.y <= (pngdfs.height() -1)){
+    double real_tolu = getcalculateDelta(pngdfs.getPixel(point.x, point.y-1), origin);
+    if(real_tolu < tolerancedfs && list[point.x][point.y-1] == 0){
+      Point up(point.x, point.y -1);
+      s.push(up);
+      list[up.x][up.y] = 1;
+    }
   }
 }
 
@@ -77,11 +96,7 @@ void DFS::add(const Point & point) {
 Point DFS::pop() {
   /** @todo [Part 1] */
   Point top = s.top();
-  while(list[top.x][top.y] == 1){
-    s.pop();
-    top = s.top()
-  }
-  list[top.x][top.y] = 1;
+  s.pop();
   return top;
 }
 

@@ -24,20 +24,23 @@ BFS::BFS(const PNG & png, const Point & start, double tolerance) {
   pngbfs = png;
   startbfs = start;
   tolerancebfs = tolerance;
-  q.enqueue(start);
-  for(i=0; i<png.width; i++){
-    for(j=0; j<png.height; j++){
+  q.push(start);
+  list = new int*[png.width()];
+  for(unsigned i=0; i<png.width(); i++){
+    list[i] = new int[png.height()];
+    for(unsigned j=0; j<png.height(); j++){
       list[i][j] = 0;
     }
   }
+  list[startbfs.x][startbfs.y] = 1;
 }
-
 /**
  * Returns an iterator for the traversal starting at the first point.
  */
 ImageTraversal::Iterator BFS::begin() {
   /** @todo [Part 1] */
-  return ImageTraversal::Iterator(startbfs);
+  ImageTraversal * traversal = new BFS(pngbfs, startbfs, tolerancebfs);
+  return ImageTraversal::Iterator(traversal);
 }
 
 /**
@@ -45,6 +48,7 @@ ImageTraversal::Iterator BFS::begin() {
  */
 ImageTraversal::Iterator BFS::end() {
   /** @todo [Part 1] */
+
   return ImageTraversal::Iterator();
 }
 
@@ -53,23 +57,39 @@ ImageTraversal::Iterator BFS::end() {
  */
 void BFS::add(const Point & point) {
   /** @todo [Part 1] */
-  if(point.x < pngdfs.width_){      //Might have to be pngdfs.width_ -1
-    Point right(point.x+1, point.y);
-    q.enqueue(right);
+  HSLAPixel origin = pngbfs.getPixel(startbfs.x, startbfs.y);
+  if(point.x < (pngbfs.width()-1)){
+    double real_tolr = getcalculateDelta(pngbfs.getPixel(point.x+1, point.y), origin);
+    if(real_tolr < tolerancebfs && list[point.x+1][point.y] == 0){
+      Point right(point.x+1, point.y);
+      q.push(right);
+      list[right.x][right.y] = 1;
+    }
   }
-  if(point.y < pngdfs.height_){
-    Point down(point.x, point.y+1);
-    q.enqueue(down);
+  if(point.y < (pngbfs.height() -1)){
+    double real_told = getcalculateDelta(pngbfs.getPixel(point.x, point.y+1), origin);
+    if(real_told< tolerancebfs && list[point.x][point.y+1] == 0){
+      Point down(point.x, point.y+1);
+      q.push(down);
+      list[down.x][down.y] = 1;
+    }
   }
-  if(point.x > 0){
-    Point left(point.x-1, point.y);
-    q.enqueue(left);
+  if(point.x > 0 && point.x <= (pngbfs.width()-1) ){
+    double real_toll = getcalculateDelta(pngbfs.getPixel(point.x-1, point.y), origin);
+    if(real_toll < tolerancebfs && list[point.x-1][point.y] == 0){
+      Point left(point.x-1, point.y);
+      q.push(left);
+      list[left.x][left.y] = 1;
+    }
   }
-  if(point.y > 0){
-    Point up(point.x, point.y -1);
-    q.enqueue(up);
+  if(point.y > 0 && point.y <= (pngbfs.height() -1)){
+    double real_tolu = getcalculateDelta(pngbfs.getPixel(point.x, point.y-1), origin);
+    if(real_tolu < tolerancebfs && list[point.x][point.y-1] == 0){
+      Point up(point.x, point.y -1);
+      q.push(up);
+      list[up.x][up.y] = 1;
+    }
   }
-
 }
 
 /**
@@ -78,11 +98,7 @@ void BFS::add(const Point & point) {
 Point BFS::pop() {
   /** @todo [Part 1] */
   Point top = q.front();
-  while(list[top.x][top.y] == 1){
-    q.dequeue();
-    top = q.front()
-  }
-  list[top.x][top.y] = 1;
+  q.pop();
   return top;
 }
 
@@ -91,7 +107,7 @@ Point BFS::pop() {
  */
 Point BFS::peek() const {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  return q.front();
 }
 
 /**
@@ -99,5 +115,8 @@ Point BFS::peek() const {
  */
 bool BFS::empty() const {
   /** @todo [Part 1] */
-  return true;
+  if(q.empty())
+    return true;
+  else
+    return false;
 }
