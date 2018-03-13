@@ -20,9 +20,9 @@
 DFS::DFS(const PNG & png, const Point & start, double tolerance) {
   /** @todo [Part 1] */
   pngdfs = png;
-  startdfs = start;
+  start_ = start;
   tolerancedfs = tolerance;
-  s.push(startdfs);
+  s.push(start_);
   list = new int*[png.width()];
   for(unsigned i=0; i<png.width(); i++){
     list[i] = new int[png.height()];
@@ -37,7 +37,7 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance) {
  */
 ImageTraversal::Iterator DFS::begin() {
   /** @todo [Part 1] */
-  ImageTraversal* traversal = new DFS(pngdfs, startdfs, tolerancedfs);
+  ImageTraversal* traversal = new DFS(pngdfs, start_, tolerancedfs);
   return ImageTraversal::Iterator(traversal);
 }
 
@@ -54,7 +54,7 @@ ImageTraversal::Iterator DFS::end() {
  */
 void DFS::add(const Point & point) {
   /** @todo [Part 1] */
-  HSLAPixel origin = pngdfs.getPixel(startdfs.x, startdfs.y);
+  HSLAPixel origin = pngdfs.getPixel(start_.x, start_.y);
 if(point.x < (pngdfs.width()-1)){
   double real_tolr = getcalculateDelta(pngdfs.getPixel(point.x+1, point.y), origin);
   if(real_tolr < tolerancedfs && list[point.x+1][point.y] == 0){

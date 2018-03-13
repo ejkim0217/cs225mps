@@ -43,7 +43,7 @@ int main() {
   PNG png = getTestPNG();
   Point startPoint(2, 2);
 
-  DFS t(png, startPoint, 0.2);
+  BFS t(png, startPoint, 0.2);
   unsigned count = 0;
   for (const Point & p : t) {
     std::cout<<p<<endl;

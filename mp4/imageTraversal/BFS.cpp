@@ -22,9 +22,9 @@ using namespace cs225;
 BFS::BFS(const PNG & png, const Point & start, double tolerance) {
   /** @todo [Part 1] */
   pngbfs = png;
-  startbfs = start;
+  start_ = start;
   tolerancebfs = tolerance;
-  q.push(start);
+  q.push(start_);
   list = new int*[png.width()];
   for(unsigned i=0; i<png.width(); i++){
     list[i] = new int[png.height()];
@@ -38,7 +38,7 @@ BFS::BFS(const PNG & png, const Point & start, double tolerance) {
  */
 ImageTraversal::Iterator BFS::begin() {
   /** @todo [Part 1] */
-  ImageTraversal * traversal = new BFS(pngbfs, startbfs, tolerancebfs);
+  ImageTraversal * traversal = new BFS(pngbfs, start_, tolerancebfs);
   return ImageTraversal::Iterator(traversal);
 }
 
@@ -56,7 +56,7 @@ ImageTraversal::Iterator BFS::end() {
  */
 void BFS::add(const Point & point) {
   /** @todo [Part 1] */
-  HSLAPixel origin = pngbfs.getPixel(startbfs.x, startbfs.y);
+  HSLAPixel origin = pngbfs.getPixel(start_.x, start_.y);
   if(point.x < (pngbfs.width()-1)){
     double real_tolr = getcalculateDelta(pngbfs.getPixel(point.x+1, point.y), origin);
     if(real_tolr < tolerancebfs && list[point.x+1][point.y] == 0){

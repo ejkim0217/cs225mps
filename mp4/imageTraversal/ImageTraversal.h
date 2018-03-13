@@ -40,6 +40,7 @@ public:
     /** add member functions if neccesary*/
     Point current;      //Originally in private, may have to make a getCurrent() function
 
+
   private:
     /** @todo [Part 1] */
     /** add private members here if neccesary*/
@@ -83,6 +84,7 @@ public:
   virtual bool empty() const = 0;
 
   int ** list;
+  Point start_;
 
 private:
   static double calculateDelta(const HSLAPixel & p1, const HSLAPixel & p2);

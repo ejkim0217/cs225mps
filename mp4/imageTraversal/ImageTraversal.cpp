@@ -41,6 +41,7 @@ ImageTraversal::Iterator::Iterator() {
 
 ImageTraversal::Iterator::Iterator(ImageTraversal*traversalold){
   traversal = traversalold;
+  current = traversal->start_;
 }
 
 /**
