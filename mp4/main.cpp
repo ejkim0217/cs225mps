@@ -14,14 +14,13 @@
 
 using namespace cs225;
 PNG getTestPNG() {
-  PNG png(4, 4);
+  PNG png(6, 6);
   HSLAPixel blackPixel(180, 1, 0);
 
-  for (unsigned i = 0; i < 4; i++) {
-    png.getPixel(i, 0) = blackPixel;
-    png.getPixel(0, i) = blackPixel;
-    png.getPixel(i, 3) = blackPixel;
-    png.getPixel(3, i) = blackPixel;
+  for (unsigned i = 0; i < 6; i++) {
+    for(unsigned j=0; j<6; j++){
+        png.getPixel(i, j) = blackPixel;
+    }
   }
 
   return png;
@@ -42,12 +41,12 @@ int main() {
   animation.write("myFloodFill.gif");
   */
   PNG png = getTestPNG();
-  Point startPoint(1, 1);
+  Point startPoint(2, 2);
 
   DFS t(png, startPoint, 0.2);
   unsigned count = 0;
   for (const Point & p : t) {
-
+    std::cout<<p<<endl;
     count++;
   }
 

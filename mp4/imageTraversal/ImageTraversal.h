@@ -38,12 +38,14 @@ public:
 
     /** @todo [Part 1] */
     /** add member functions if neccesary*/
+    Point current;      //Originally in private, may have to make a getCurrent() function
 
   private:
     /** @todo [Part 1] */
     /** add private members here if neccesary*/
     ImageTraversal * traversal;
-    Point current;
+
+
 
   };
   double getcalculateDelta(HSLAPixel & p1, HSLAPixel & p2);
@@ -79,6 +81,8 @@ public:
    * Virtual function. Derived class need to implement this
    */
   virtual bool empty() const = 0;
+
+  int ** list;
 
 private:
   static double calculateDelta(const HSLAPixel & p1, const HSLAPixel & p2);

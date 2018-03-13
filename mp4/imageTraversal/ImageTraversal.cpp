@@ -52,9 +52,15 @@ ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
   /** @todo [Part 1] */
   if(!traversal->empty()){
     current = traversal->pop();
+    traversal->list[current.x][current.y] = 1;
+    while(!traversal->empty() && traversal->list[traversal->peek().x][traversal->peek().y] == 1)
+      current = traversal->pop();
     traversal->add(current);
+
     if(traversal->empty())
       traversal = NULL;
+    else
+      current = traversal->peek();
     }
   return *this;
 }

@@ -24,6 +24,7 @@ using namespace cs225;
 class DFS : public ImageTraversal {
 public:
   DFS(const PNG & png, const Point & start, double tolerance);
+  ~DFS();
 
   ImageTraversal::Iterator begin();
   ImageTraversal::Iterator end();
@@ -32,12 +33,11 @@ public:
   Point pop();
   Point peek() const;
   bool empty() const;
-
+  
 private:
 	/** @todo [Part 1] */
 	/** add private members here*/
   std::stack<Point> s;
-  int ** list;
   PNG pngdfs;
   Point startdfs;
   double tolerancedfs;
