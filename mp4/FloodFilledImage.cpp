@@ -58,7 +58,7 @@ Animation FloodFilledImage::animate(unsigned frameInterval) const {
   Animation animation;
   /** @todo [Part 2] */
   animation.addFrame(floodpng);
-  unsigned count = 1;
+  unsigned count = 0;
   for(unsigned long i =0; i < tv.size(); i++){
     ImageTraversal * traversal = tv[i];
     ColorPicker * colorPicker = cv[i];
@@ -68,7 +68,7 @@ Animation FloodFilledImage::animate(unsigned frameInterval) const {
       count++;
       if(count == frameInterval){
         animation.addFrame(floodpng);
-        count = 1;
+        count = 0;
       }
     }
   }
