@@ -13,18 +13,6 @@
 #include "colorPicker/MyColorPicker.h"
 
 using namespace cs225;
-PNG getTestPNG() {
-  PNG png(6, 6);
-  HSLAPixel blackPixel(180, 1, 0);
-
-  for (unsigned i = 0; i < 6; i++) {
-    for(unsigned j=0; j<6; j++){
-        png.getPixel(i, j) = blackPixel;
-    }
-  }
-
-  return png;
-}
 
 
 
@@ -40,15 +28,26 @@ int main() {
   lastFrame.writeToFile("myFloodFill.png");
   animation.write("myFloodFill.gif");
   */
-  PNG png = getTestPNG();
-  Point startPoint(2, 2);
+  PNG png;
+  png.readFromFile("tests/i.png");
 
-  BFS t(png, startPoint, 0.2);
-  unsigned count = 0;
-  for (const Point & p : t) {
-    std::cout<<p<<endl;
-    count++;
-  }
+  FloodFilledImage image(png);
+  BFS dfs(png, Point(40, 40), 0.05);
+  BFS bfs(png, Point (0, 0), 1.0);
+  MyColorPicker derived;
+  RainbowColorPicker rainbow(.1);
+
+  image.addFloodFill(bfs, derived);
+  image.addFloodFill( dfs, rainbow );
+
+  Animation animation = image.animate(1000);
+
+  PNG firstFrame = animation.getFrame(0);
+  PNG lastFrame = animation.getFrame( animation.frameCount() - 1 );
+
+  firstFrame.writeToFile("mycolorpicker-first.png");
+  lastFrame.writeToFile("mycolorpicker-last.png");
+  animation.write("mycolorpicker.gif");
 
 
 
