@@ -48,7 +48,15 @@ V BTree<K, V>::find(const BTreeNode* subroot, const K& key) const
      * anywhere in the tree and return the default V.
      */
 
-    return V();
+    //Return valid index
+    // std::cout<< first_larger_idx << std::endl;
+    if(subroot->elements[first_larger_idx].key == key)
+      return subroot->elements[first_larger_idx].value;
+
+    if(subroot->is_leaf)
+      return V();
+
+    return find(subroot->children[first_larger_idx], key);
 }
 
 /**
@@ -73,6 +81,11 @@ void BTree<K, V>::insert(const K& key, const V& value)
         split_child(new_root, 0);
         root = new_root;
     }
+    // BTreeNode *temp = root;
+    // std::cout << *temp << std::endl;
+    // for(unsigned long i =0; i<temp->children.size(); i++){
+    //   std::cout << *(temp->children[i])<< std::endl;
+    // }
 }
 
 /**
@@ -146,6 +159,20 @@ void BTree<K, V>::split_child(BTreeNode* parent, size_t child_idx)
 
 
     /* TODO Your code goes here! */
+    //If fine return
+
+    //General
+    parent->elements.insert(elem_itr, child->elements[mid_elem_idx]);
+    new_right->elements.assign(mid_elem_itr + 1, child->elements.end());
+    new_left->elements.assign(child->elements.begin(), mid_elem_itr);
+    parent->children.insert(child_itr, new_right);
+
+    if(!(child->is_leaf)){
+      new_right->children.assign(mid_child_itr, new_left->children.end());
+      new_left->children.assign(new_left->children.begin(), mid_child_itr);
+
+    }
+
 }
 
 /**
@@ -170,4 +197,21 @@ void BTree<K, V>::insert(BTreeNode* subroot, const DataPair& pair)
     size_t first_larger_idx = insertion_idx(subroot->elements, pair);
 
     /* TODO Your code goes here! */
+    //check if key exists;
+    for(unsigned long i=0; i< subroot->elements.size(); i++){
+      if(subroot->elements[i].key == pair.key)
+        return;
+    }
+    //Leaf node and key doesn't exist
+    if(subroot->is_leaf){
+      auto elem_itr = subroot->elements.begin() + first_larger_idx;
+      subroot->elements.insert(elem_itr, pair); //
+      return;
+    }
+    //Not leaf node, must figure out which child we want to get to
+    insert(subroot->children[first_larger_idx], pair);
+    if(subroot->children[first_larger_idx]->elements.size() < order)
+      return;
+    split_child(subroot, first_larger_idx);
+    return;
 }

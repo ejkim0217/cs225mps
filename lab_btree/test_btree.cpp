@@ -127,8 +127,8 @@ int main(int argc, char* argv[])
     cout << boolalpha;
     if (argc == 1) {
         small_btree_small_order();
-        large_btree_small_order();
-        huge_btree_large_order();
+        // large_btree_small_order();
+        // huge_btree_large_order();
     } else if (argc != 3) {
         cout << USAGE << endl;
         return -1;
