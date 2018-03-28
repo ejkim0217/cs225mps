@@ -61,8 +61,6 @@ namespace cs225 {
   }
 
   bool HSLAPixel::operator<  (HSLAPixel const & other) const {
-      if (*this == other) { return false; }
-
       if (l < other.l)
           return true;
       else if (l > other.l)
