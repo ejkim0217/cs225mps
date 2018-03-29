@@ -260,6 +260,11 @@ class KDTree
     /**
      * @todo Add your helper functions here.
      */
+     KDTreeNode * buildKDTree(vector<Point<Dim>>& points, int begin, int end, int d);
+     void get_median(vector<Point<Dim>>& points, int begin, int end, int mid, int d);
+     int partition(vector<Point<Dim>>& points, int begin, int end, int pivot, int d);
+     void swap(vector<Point<Dim>>& points, int one, int two);
+
 };
 
 #include "kdtree.cpp"

@@ -52,7 +52,7 @@ Point<Dim>::Point(T x, ...) {
 }
 
 template <int Dim>
-Point<Dim>& Point<Dim>::operator=(const Point<Dim>& other) 
+Point<Dim>& Point<Dim>::operator=(const Point<Dim>& other)
 {
     for (int i = 0; i < Dim; i++) {
         vals[i] = other.vals[i];
