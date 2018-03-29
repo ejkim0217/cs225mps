@@ -96,7 +96,7 @@ template <int Dim>
 typename KDTree<Dim>::KDTreeNode * KDTree<Dim>::buildKDTree(vector<Point<Dim>>&points, int begin, int end, int d) //Potentially needs to be const
 {
   //Terminal case -- NOT DONE
-  if(end - begin <= 0)
+  if(end - begin < 0)
     return NULL;
   //Find median value
   int mid = floor((begin + end)/2);
