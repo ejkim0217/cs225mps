@@ -26,18 +26,14 @@ MosaicCanvas* mapTiles(SourceImage const& theSource,
      //Get array of points based off HSLAPixel
      for(unsigned long it = 0; it < theTiles.size(); it++){
        HSLAPixel avg_color = theTiles[it].getAverageColor();
-       double hue = avg_color.h;
-       double sat = avg_color.s;
-       double lue = avg_color.l;
-       Point<3> new_point = Point<3>(hue, sat, lue);
-       points[it] = new_point;
+       points.push_back(Point<3>(convertToLAB(avg_color)));
        tilemap.insert(std::make_pair(points[it], it));
      }
      //Make tree of points
      KDTree<3> myTree = KDTree<3>(points);
      //Set canvas to each point
      for(int i =0; i< canvas->getRows(); i++){
-       for(int j=0; j< canvas->getColumns(); i++){
+       for(int j=0; j< canvas->getColumns(); j++){
          canvas->setTile(i, j, get_match_at_idx(myTree, tilemap, theTiles, theSource, i, j));
        }
      }
