@@ -264,6 +264,9 @@ class KDTree
      void get_median(vector<Point<Dim>>& points, int begin, int end, int mid, int d);
      int partition(vector<Point<Dim>>& points, int begin, int end, int pivot, int d);
      void swap(vector<Point<Dim>>& points, int one, int two);
+     Point<Dim> findNearest(KDTreeNode* currentNode, const Point<Dim> targetPoint, unsigned long radius, Point<Dim> bestPoint, int curDim) const;//helper function for findNearestNeighbor
+     Point<Dim> getBetterPoint(Point<Dim> currentPoint, Point<Dim> bestPoint, const Point<Dim> targetPoint, unsigned long &radius) const;//returns the 'better'(closer or 'smaller') point
+     unsigned long getDistanceSquared(Point<Dim> point1, Point<Dim> point2) const;//returns the total of the squared distances between two points along all dimensions
 
 };
 
