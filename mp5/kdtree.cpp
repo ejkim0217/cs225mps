@@ -64,8 +64,8 @@ KDTree<Dim>::KDTree(const KDTree& other) {
    * @todo Implement this function!
    */
    //Excessively sketch
-  // points = other.points;
-  // root = buildKDTree(other.points, 0, other.points.size()-1, 0);
+  points = other.points;
+  root = buildKDTree(points, 0, points.size()-1, 0);
 }
 
 template <int Dim>
@@ -73,9 +73,11 @@ const KDTree<Dim>& KDTree<Dim>::operator=(const KDTree& rhs) {
   /**
    * @todo Implement this function!
    */
-   // points = rhs.points;
-   // root = rhs.root;
-
+   if(this != &rhs){
+     treeTearDown(this);
+     points = rhs.points;
+     root = buildKDTree(rhs.points, 0, rhs.points.size()-1, 0);
+   }
   return *this;
 }
 
@@ -84,7 +86,7 @@ KDTree<Dim>::~KDTree() {
   /**
    * @todo Implement this function!
    */
-   //treeTearDown(root);
+   treeTearDown(root);
 }
 
 template <int Dim>
@@ -92,7 +94,7 @@ void KDTree<Dim>:: treeTearDown(KDTreeNode * current){
   if(current != NULL){
     treeTearDown(current->left);
     treeTearDown(current->right);
-    delete root;
+    delete current;
   }
 }
 

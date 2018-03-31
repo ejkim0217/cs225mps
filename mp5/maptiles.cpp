@@ -21,9 +21,27 @@ MosaicCanvas* mapTiles(SourceImage const& theSource,
      * @todo Implement this function!
      */
      MosaicCanvas * canvas = new MosaicCanvas(theSource.getRows(), theSource.getColumns());
-     
-
-    return NULL;
+     vector<Point<3>> points;
+     std::map<Point<3>, int> tilemap;
+     //Get array of points based off HSLAPixel
+     for(unsigned long it = 0; it < theTiles.size(); it++){
+       HSLAPixel avg_color = theTiles[it].getAverageColor();
+       double hue = avg_color.h;
+       double sat = avg_color.s;
+       double lue = avg_color.l;
+       Point<3> new_point = Point<3>(hue, sat, lue);
+       points[it] = new_point;
+       tilemap.insert(std::make_pair(points[it], it));
+     }
+     //Make tree of points
+     KDTree<3> myTree = KDTree<3>(points);
+     //Set canvas to each point
+     for(int i =0; i< canvas->getRows(); i++){
+       for(int j=0; j< canvas->getColumns(); i++){
+         canvas->setTile(i, j, get_match_at_idx(myTree, tilemap, theTiles, theSource, i, j));
+       }
+     }
+    return canvas;
 }
 
 TileImage* get_match_at_idx(const KDTree<3>& tree,
