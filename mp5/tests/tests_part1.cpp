@@ -42,7 +42,7 @@ bool tree_equals_output(stringstream & s, string filename)
     return true;
 }
 
-void compareBinaryFiles( string yourFile, string ourFile ) 
+void compareBinaryFiles( string yourFile, string ourFile )
 {
     ifstream ourBinary( ourFile, ios::binary );
     stringstream ours;

@@ -88,8 +88,6 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query) const
     /**
      * @todo Implement this function!
      */
-
-
    unsigned long radius = getDistanceSquared(root->point, query);
    return findNearest(root, query, radius, root->point, 0);
 }
@@ -170,18 +168,22 @@ Point<Dim> KDTree<Dim>::findNearest(KDTreeNode* currentNode, const Point<Dim> ta
 {
   Point<Dim> nearest = bestPoint;
   bool isLeft = false;    //used to check later which subtree to recurse into if it potentially contains a closer point
-  if((currentNode->point)[curDim] > targetPoint[curDim])//recursing into left subtree if true
+
+  //Base case -- goes down correct path to leaf (!= NULL guarantees continuation till leaf)
+  if(smallerDimVal(targetPoint, currentNode->point, curDim))//recursing into left subtree if true
   {
-    isLeft = true;
-    if(currentNode->left != NULL)
+    if(currentNode->left != NULL){
       nearest = findNearest(currentNode->left, targetPoint, radius, nearest, (curDim + 1) % Dim);
+      isLeft = true;
+    }
   }
-  else if((currentNode->point)[curDim] < targetPoint[curDim]){//recursing into right subtree if true
+  else if(smallerDimVal(currentNode->point, targetPoint, curDim)){//recursing into right subtree if true
     if(currentNode->right != NULL)
       nearest = findNearest(currentNode->right, targetPoint, radius, nearest, (curDim + 1) % Dim);
   }
+  //Compares leaf
   radius = getDistanceSquared(nearest, targetPoint);
-  nearest = getBetterPoint(currentNode->point, nearest, targetPoint, radius);
+  nearest = getBetterPoint(currentNode->point, nearest, targetPoint);
   radius = getDistanceSquared(nearest, targetPoint);
 
   if((((currentNode->point)[curDim] - nearest[curDim]) * ((currentNode->point)[curDim] - nearest[curDim])) <= radius)//checking to see if we should recurse into subtree we didn't look at earlier
@@ -196,19 +198,32 @@ Point<Dim> KDTree<Dim>::findNearest(KDTreeNode* currentNode, const Point<Dim> ta
       }
     }
   }
-
-
-
   return nearest;
+
+  // //leaf node
+  // if(currentNode->left == NULL && currentNode->right == NULL){
+  //   return bestPoint = currentNode->point;
+  // }
+  // //Traverse left
+  // if(currentNode->left != NULL && smallerDimVal(targetPoint, currentNode->point,curDim)){
+  //   bestPoint = findNearest(currentNode->left, targetPoint, radius, bestPoint, (curDim+1)% Dim);
+  // }
+  // //Traverse right
+  // if(currentNode->right != NULL && smallerDimVal(currentNode->point, targetPoint, curDim)){
+  //   bestPoint = findNearest(currentNode->right, targetPoint, radius, bestPoint, (curDim+1)% Dim);
+  // }
+  //
+  // if(shouldReplace(targetPoint, bestPoint, currentNode->point))
+  //   bestPoint = currentNode->point;
+  //
+  // return bestPoint;
 }
 
 template <int Dim>
-Point<Dim> KDTree<Dim>::getBetterPoint(Point<Dim> currentPoint, Point<Dim> bestPoint, const Point<Dim> targetPoint, unsigned long &radius) const
+Point<Dim> KDTree<Dim>::getBetterPoint(Point<Dim> currentPoint, Point<Dim> bestPoint, const Point<Dim> targetPoint) const
 {
-  bool differentPoint = shouldReplace(targetPoint, bestPoint, currentPoint);
-
-  if(differentPoint)
-  return currentPoint;
+  if(shouldReplace(targetPoint, bestPoint, currentPoint))
+    return currentPoint;
 
   return bestPoint;
 
