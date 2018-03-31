@@ -260,13 +260,19 @@ class KDTree
     /**
      * @todo Add your helper functions here.
      */
+     //Constructor helper functions
      KDTreeNode * buildKDTree(vector<Point<Dim>>& points, int begin, int end, int d);
      void get_median(vector<Point<Dim>>& points, int begin, int end, int mid, int d);
      int partition(vector<Point<Dim>>& points, int begin, int end, int pivot, int d);
      void swap(vector<Point<Dim>>& points, int one, int two);
+
+     //findNearestNeighbor helper functions
      Point<Dim> findNearest(KDTreeNode* currentNode, const Point<Dim> targetPoint, Point<Dim> bestPoint, int curDim) const;//helper function for findNearestNeighbor
      double getDistanceSquared(Point<Dim> point1, Point<Dim> point2) const;//returns the total of the squared distances between two points along all dimensions
 
+     //Rule of Three helper functions
+     void treeTearDown(KDTreeNode * current);
+     vector<Point<Dim>> points;
 };
 
 #include "kdtree.cpp"

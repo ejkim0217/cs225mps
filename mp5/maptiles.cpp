@@ -20,6 +20,8 @@ MosaicCanvas* mapTiles(SourceImage const& theSource,
     /**
      * @todo Implement this function!
      */
+     MosaicCanvas * canvas = new MosaicCanvas(theSource.getRows(), theSource.getColumns());
+     
 
     return NULL;
 }

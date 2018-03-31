@@ -54,8 +54,7 @@ KDTree<Dim>::KDTree(const vector<Point<Dim>>& newPoints)
     /**
      * @todo Implement this function!
      */
-     vector<Point<Dim>> points = newPoints;
-
+     points = newPoints;
      root = buildKDTree(points, 0, newPoints.size()-1, 0);
 }
 
@@ -64,6 +63,9 @@ KDTree<Dim>::KDTree(const KDTree& other) {
   /**
    * @todo Implement this function!
    */
+   //Excessively sketch
+  // points = other.points;
+  // root = buildKDTree(other.points, 0, other.points.size()-1, 0);
 }
 
 template <int Dim>
@@ -71,6 +73,8 @@ const KDTree<Dim>& KDTree<Dim>::operator=(const KDTree& rhs) {
   /**
    * @todo Implement this function!
    */
+   // points = rhs.points;
+   // root = rhs.root;
 
   return *this;
 }
@@ -80,6 +84,16 @@ KDTree<Dim>::~KDTree() {
   /**
    * @todo Implement this function!
    */
+   //treeTearDown(root);
+}
+
+template <int Dim>
+void KDTree<Dim>:: treeTearDown(KDTreeNode * current){
+  if(current != NULL){
+    treeTearDown(current->left);
+    treeTearDown(current->right);
+    delete root;
+  }
 }
 
 template <int Dim>
@@ -94,7 +108,7 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query) const
 template <int Dim>
 typename KDTree<Dim>::KDTreeNode * KDTree<Dim>::buildKDTree(vector<Point<Dim>>&points, int begin, int end, int d) //Potentially needs to be const
 {
-  //Terminal case -- NOT DONE
+  //Terminal case
   if(end - begin < 0)
     return NULL;
   //Find median value
@@ -185,12 +199,7 @@ Point<Dim> KDTree<Dim>::findNearest(KDTreeNode* currentNode, const Point<Dim> ta
   }
 
   double curr_diff = getDistanceSquared(targetPoint, bestPoint);
-  double parent_diff = ((currentNode->point)[curDim] - bestPoint[curDim]) * ((currentNode->point)[curDim] - bestPoint[curDim]);
-
-  std::cout<<bestPoint<<std::endl;
-  std::cout<<curr_diff<<std::endl;
-  std::cout<<currentNode->point<<std::endl;
-  std::cout<<parent_diff<<std::endl;
+  double parent_diff = ((currentNode->point)[curDim] - targetPoint[curDim]) * ((currentNode->point)[curDim] - targetPoint[curDim]);
 
   if(parent_diff <= curr_diff){
     if(isLeft){
