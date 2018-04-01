@@ -151,4 +151,5 @@ void SCHashTable<K, V>::resizeTable()
      *
      * @hint Use findPrime()!
      */
+     int table_size = findPrime(size * 2);
 }
