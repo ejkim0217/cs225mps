@@ -87,8 +87,20 @@ void LPHashTable<K, V>::insert(K const& key, V const& value)
      *  forget to mark the cell for probing with should_probe!
      */
 
-    (void) key;   // prevent warnings... When you implement this function, remove this line.
-    (void) value; // prevent warnings... When you implement this function, remove this line.
+     //Checks if we need to resize
+     ++elems;
+    if(shouldResize())
+      resizeTable();
+    //Make value pair and gets index from hash function
+    pair<K, V> p(key, value);
+    size_t index = hash(key, size);
+    //Find next empty index with linear probing
+    while(should_probe[index] == true){
+      index = (index+1) % size;
+    }
+    //Update values
+    table[index] = new pair<K, V>(p);
+    should_probe[index] = true;
 }
 
 template <class K, class V>

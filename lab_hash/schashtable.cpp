@@ -30,8 +30,7 @@ SCHashTable<K, V>::~SCHashTable()
 }
 
 template <class K, class V>
-SCHashTable<K, V> const& SCHashTable<K, V>::
-operator=(SCHashTable<K, V> const& rhs)
+SCHashTable<K, V> const& SCHashTable<K, V>::operator=(SCHashTable<K, V> const& rhs)
 {
     if (this != &rhs) {
         delete[] table;
@@ -76,13 +75,18 @@ void SCHashTable<K, V>::remove(K const& key)
      * erase() function on std::list!
      */
      //NOT DONE
-     if(keyExists(key)){
-      size_t index = find(key);
-      it = table[index].begin();
-      while(it != key)
-        it++;
-      table[index].erase(it);
+
+    if(keyExists(key)){
+      size_t idx = hash(key, size);
+      for(it = table[idx].begin(); it != table[idx].end(); it++) {
+        if (it->first == key){
+          table[idx].erase(it);
+          --elems;
+          break;
+        }
+      }
     }
+    return;
     //(void) key; // prevent warnings... When you implement this function, remove this line.
 }
 
@@ -151,5 +155,22 @@ void SCHashTable<K, V>::resizeTable()
      *
      * @hint Use findPrime()!
      */
-     int table_size = findPrime(size * 2);
+     size_t newSize = findPrime(size * 2);
+     list<pair<K, V>> * temp = new list<pair<K,V>>[newSize];
+     for (size_t i = 0; i < size; i++) {
+         if (!table[i].empty()) {
+             typename list<pair<K, V>>::iterator it;
+             for(it= table[i].begin(); it != table[i].end(); it++){
+               size_t idx = hash(it->first, newSize);
+               temp[idx].push_front(*it);
+             }
+         }
+     }
+
+     delete[] table;
+     // don't delete elements since we just moved their pointers around
+     table = temp;
+     size = newSize;
+
+     return;
 }
