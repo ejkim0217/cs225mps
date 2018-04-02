@@ -13,7 +13,7 @@ using std::string;
 using std::vector;
 using std::ofstream;
 using std::endl;
- 
+
 /**
  * Constructs an AnagramFinder based on a filename to read potential
  * anagrams from.
@@ -55,13 +55,27 @@ bool AnagramFinder<Dict>::checkWord(const string& word, const string& test)
      * @todo Implement this function! You should use the provided
      * templated hashtable class Dict.
      */
+     if (word.length() != test.length())
+         return false;
+    //Make hash tables
+     Dict<char, int> wordTable((word.length()*2));
+     Dict<char, int> testTable((test.length()*2));
 
-    (void) word; // prevent warnings... When you implement this function, remove this line.
-    (void) test; // prevent warnings... When you implement this function, remove this line.
-
-    return true;
-
-    return true;
+     for(size_t i = 0; i < word.length(); i++){
+       wordTable[word[i]]++;
+       testTable[test[i]]++;
+     }
+     typename Dict<char, int>::iterator word_it;
+     typename Dict<char, int>::iterator test_it = testTable.begin();
+     for (word_it = wordTable.begin(); word_it != wordTable.end(); word_it++){
+       if (wordTable[word_it->first] != testTable[word_it->first])
+        return false;
+     }
+     for (test_it = testTable.begin(); test_it != testTable.end(); test_it++){
+       if (wordTable[test_it->first] != testTable[test_it->first])
+        return false;
+     }
+     return true;
 }
 
 /**

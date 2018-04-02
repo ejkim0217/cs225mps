@@ -35,8 +35,8 @@ LogfileParser::LogLine::LogLine(const string& line)
         dte += dline;
         dte += " ";
     } while (iss);
-		
-    dte = dte.substr(0, dte.length() - 6); 
+
+    dte = dte.substr(0, dte.length() - 6);
     std::tm tm = {};
     std::stringstream ss(dte);
     ss >> std::get_time(&tm, "%a %b %d %H:%M:%S %Y");
@@ -53,28 +53,40 @@ LogfileParser::LogLine::LogLine(const string& line)
  */
 LogfileParser::LogfileParser(const string& fname) : whenVisitedTable(256)
 {
-    SCHashTable<string, bool> pageVisitedTable(256);
-    ifstream infile(fname.c_str());
-    string line;
-    while (infile.good()) {
-        getline(infile, line);
+	SCHashTable<string, bool> pageVisitedTable(256);
+	ifstream infile(fname.c_str());
+	string line;
+	while (infile.good()) {
+	  getline(infile, line);
 
-        // if the line length is 0, move on to the next loop iteration
-        if (line.length() == 0)
-            continue;
+	  // if the line length is 0, move on to the next loop iteration
+	  if (line.length() == 0)
+		   continue;
 
-        // otherwise parse the line and update the hash tables and vector
-        LogLine ll(line);
-        /**
-         * @todo Finish implementing this function.
-         *
-         * Given the LogLine above, you should be able to update the member
-         * variable hash table and any other hash tables necessary to solve
-         * this problem. This should also build the uniqueURLs member
-         * vector as well.
-         */
-    }
-    infile.close();
+	  // otherwise parse the line and update the hash tables and vector
+	  LogLine ll(line);
+	  /**
+		* @todo Finish implementing this function.
+		*
+		* Given the LogLine above, you should be able to update the member
+		* variable hash table and any other hash tables necessary to solve
+		* this problem. This should also build the uniqueURLs member
+		* vector as well.
+		*/
+
+		if (!whenVisitedTable.keyExists(ll.customer + ll.url)) {
+			whenVisitedTable.insert(ll.customer + ll.url, ll.date);
+		}
+		else if (whenVisitedTable[ll.customer + ll.url] < ll.date ) {
+			whenVisitedTable[ll.customer + ll.url] = ll.date;
+		}
+
+		if (pageVisitedTable.keyExists(ll.url)==false) {
+			pageVisitedTable.insert(ll.url, true);
+			uniqueURLs.push_back(ll.url);
+		}
+	}
+	infile.close();
 }
 
 /**
@@ -88,13 +100,10 @@ bool LogfileParser::hasVisited(const string& customer, const string& url) const
 {
 
     /**
-     * @todo Implement this function.
+     *
      */
 
-    (void) customer; // prevent warnings... When you implement this function, remove this line.
-    (void) url;      // prevent warnings... When you implement this function, remove this line.
-
-    return true; // replaceme
+	return whenVisitedTable.keyExists(customer + url);
 }
 
 /**
@@ -112,13 +121,10 @@ time_t LogfileParser::dateVisited(const string& customer,
 {
 
     /**
-     * @todo Implement this function.
+     *
      */
 
-    (void) customer; // prevent warnings... When you implement this function, remove this line.
-    (void) url;      // prevent warnings... When you implement this function, remove this line.
-
-    return time_t(); // replaceme
+    return whenVisitedTable.find(customer + url);
 }
 
 /**
