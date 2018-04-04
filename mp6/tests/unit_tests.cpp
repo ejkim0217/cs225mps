@@ -27,7 +27,7 @@ void removeSentinels(vector<int> & a) {
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
 
-TEST_CASE("SkipList::traverse after ctor returns a list with two sentinel nodes", "[weight=5]") {
+TEST_CASE("SkipList::traverse after ctor returns a list with two sentinel nodes", "[weight=5][part=1]") {
     SkipList list(probability, maxLevel);
     vector<int> result = list.traverse();
 
@@ -35,7 +35,7 @@ TEST_CASE("SkipList::traverse after ctor returns a list with two sentinel nodes"
     REQUIRE(result.size() == 2);
 }
 
-TEST_CASE("SkipList::traverse::size == 1 after one element was added", "[weight=5]") {
+TEST_CASE("SkipList::traverse::size == 1 after one element was added", "[weight=5][part=1]") {
     SkipList list(probability, maxLevel);
     list.insert(42, HSLAPixel(180, 1, 0.5));
 
@@ -44,7 +44,7 @@ TEST_CASE("SkipList::traverse::size == 1 after one element was added", "[weight=
     REQUIRE(result.size() == 1);
 }
 
-TEST_CASE("SkipList::traverse::size == 1 after three elements were added with the same key", "[weight=5]") {
+TEST_CASE("SkipList::traverse::size == 1 after three elements were added with the same key", "[weight=5][part=1]") {
     SkipList list(probability, maxLevel);
     list.insert(42, HSLAPixel(180, 1, 0.5));
     list.insert(42, HSLAPixel(210, 1, 0.5));
@@ -56,7 +56,7 @@ TEST_CASE("SkipList::traverse::size == 1 after three elements were added with th
     REQUIRE(result.size() == 1);
 }
 
-TEST_CASE("Tests search() with a single node -- existent", "[weight=5]") {
+TEST_CASE("Tests search() with a single node -- existent", "[weight=5][part=2]") {
     SkipList list(probability, maxLevel);
     int key = 7;
 
@@ -68,7 +68,7 @@ TEST_CASE("Tests search() with a single node -- existent", "[weight=5]") {
     REQUIRE(ret == c);
 }
 
-TEST_CASE("Tests search() with a single node -- non-existent", "[weight=5]") {
+TEST_CASE("Tests search() with a single node -- non-existent", "[weight=5][part=2]") {
     SkipList list(probability, maxLevel);
     int key = 7;
 
@@ -80,7 +80,7 @@ TEST_CASE("Tests search() with a single node -- non-existent", "[weight=5]") {
     REQUIRE(ret == HSLAPixel(0, 0, 0, 0.5));
 }
 
-TEST_CASE("Tests search() with several nodes -- existent", "[weight=10]") {
+TEST_CASE("Tests search() with several nodes -- existent", "[weight=10][part=2]") {
     SkipList list(probability, maxLevel);
     int key = 7;
 
@@ -98,7 +98,7 @@ TEST_CASE("Tests search() with several nodes -- existent", "[weight=10]") {
     REQUIRE(ret == HSLAPixel(42, 42, 42));
 }
 
-TEST_CASE("Tests inserting ascending values", "[weight=5]") {
+TEST_CASE("Tests inserting ascending values", "[weight=5][part=2]") {
     SkipList list(probability, maxLevel);
     vector<int> soln;
 
@@ -117,7 +117,7 @@ TEST_CASE("Tests inserting ascending values", "[weight=5]") {
 }
 
 
-TEST_CASE("Tests inserting ascending values (reversed check)", "[weight=5]") {
+TEST_CASE("Tests inserting ascending values (reversed check)", "[weight=5][part=2]") {
     SkipList list(probability, maxLevel);
     vector<int> soln;
 
@@ -137,7 +137,7 @@ TEST_CASE("Tests inserting ascending values (reversed check)", "[weight=5]") {
     assertEqual(check, soln);
 }
 
-TEST_CASE("Tests inserting random values", "[weight=10]") {
+TEST_CASE("Tests inserting random values", "[weight=10][part=2]") {
     SkipList list(probability, maxLevel);
     vector<int> soln;
     vector<int> keys;
@@ -162,7 +162,7 @@ TEST_CASE("Tests inserting random values", "[weight=10]") {
     assertEqual(check, soln, true);
 }
 
-TEST_CASE("Tests removing nodes (easy)", "[weight=5]") {
+TEST_CASE("Tests removing nodes (easy)", "[weight=5][part=2]") {
     SkipList list(probability, maxLevel);
 
     vector<int> soln;
@@ -199,7 +199,7 @@ TEST_CASE("Tests removing nodes (easy)", "[weight=5]") {
     assertEqual(check, soln, true);
 }
 
-TEST_CASE("Tests constructors - 1", "[weight=2]") {
+TEST_CASE("Tests constructors - 1", "[weight=2][part=2]") {
     SkipList list (1337, HSLAPixel(137, 0.137, 0.137));
     list.insert(42, HSLAPixel(42, 0.42, 0.42));
     list.insert(9999, HSLAPixel(99, 0.99, 0.99));
@@ -219,7 +219,7 @@ TEST_CASE("Tests constructors - 1", "[weight=2]") {
     assertEqual(check, soln, true);
 }
 
-TEST_CASE("Tests constructors - 2", "[weight=2]") {
+TEST_CASE("Tests constructors - 2", "[weight=2][part=2]") {
     SkipList * list = new SkipList(probability, maxLevel);
     list->insert(42, HSLAPixel(42, 0.42, 0.42));
     delete list;
