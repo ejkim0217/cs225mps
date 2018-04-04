@@ -199,16 +199,17 @@ Point<Dim> KDTree<Dim>::findNearest(KDTreeNode* currentNode, const Point<Dim> ta
     if(currentNode->right != NULL)
       bestPoint = findNearest(currentNode->right, targetPoint, bestPoint, (curDim+1)% Dim);
   }
-
+  //Compares Euclidean distance of the current best point and the 1D distance of the current node
   double curr_diff = getDistanceSquared(targetPoint, bestPoint);
   double parent_diff = ((currentNode->point)[curDim] - targetPoint[curDim]) * ((currentNode->point)[curDim] - targetPoint[curDim]);
-
+  //Goes down the subtree not traversed if parent_diff <= curr_diff
   if(parent_diff <= curr_diff){
     if(isLeft){
-        if(currentNode->right != NULL)
+        if(currentNode->right != NULL){
           nearest = findNearest(currentNode->right, targetPoint, bestPoint, (curDim + 1) % Dim);
           if(shouldReplace(targetPoint, bestPoint, nearest))
             bestPoint = nearest;
+        }
       }
       else{
         if(currentNode->left != NULL){
