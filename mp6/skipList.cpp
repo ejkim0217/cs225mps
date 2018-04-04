@@ -1,12 +1,6 @@
 /**
  * @file skipList.cpp
  * MP6, skip list implementation
- *
- * @author Arman Tajback - Created
- * @author Jordi Paris Ferrer & Arman Tajback - Modified
- * @date (created) Fall 2016
- * @date (modified) Spring 2017
- * @date (modified) Fall 2017
  */
 
 #include "skipList.h"

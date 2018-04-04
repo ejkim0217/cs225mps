@@ -2,11 +2,9 @@
  * @file skipNode.h
  * MP6, Skip List's Node header file
 
- * @author Arman Tajback - Created
- * @author Jordi Paris Ferrer & Arman Tajback - Modified
- * @date (created) Fall 2016
- * @date (modified) Spring 2017
- * @date (modified) Fall 2017
+ * @author
+ *  Arman Tajback
+ *  Jordi Paris Ferrer
  */
 
 // You shouldn't need to modify this file

@@ -2,11 +2,9 @@
  * @file skipNode.cpp
  * MP6, the Skip List's Node implementation
  *
- * @author Arman Tajback - Created
- * @author Jordi Paris Ferrer & Arman Tajback - Modified
- * @date (created) Fall 2016
- * @date (modified) Spring 2017
- * @date (modified) Fall 2017
+ * @author
+ *  Arman Tajback
+ *  Jordi Paris Ferrer
  */
 
 #include "skipNode.h"

@@ -2,11 +2,9 @@
  * @file main.cpp
  * MP6, main function
  *
- * @author Arman Tajback - Created
- * @author Jordi Paris Ferrer & Arman Tajback - Modified
- * @date (created) Fall 2016
- * @date (modified) Spring 2017
- * @date (modified) Fall 2017
+ * @author
+ *  Arman Tajback
+ *  Jordi Paris Ferrer
  */
 
 // Feel free to modify this file to test more aspects of your list
