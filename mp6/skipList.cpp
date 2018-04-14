@@ -137,7 +137,7 @@ void SkipList::insert(int key, HSLAPixel value) {
 HSLAPixel SkipList::search(int key) {
     SkipNode * retval = find(key);
 
-    if (retval == NULL) {
+    if (retval != NULL) {
         return retval->value;
     }
 
@@ -246,6 +246,7 @@ bool SkipList::remove(int key) {
     // can't remove a node that doesn't exist
     if(node == NULL) {
         ret = false;
+        return ret;
     }
 
     length_--;
@@ -260,7 +261,7 @@ bool SkipList::remove(int key) {
     }
 
     delete node;
-    return true;
+    return ret;
 }
 
 
