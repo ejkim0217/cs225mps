@@ -7,7 +7,7 @@
  */
 
 #include "pronounce_dict.h"
-
+#include <string>
 #include <iterator>
 #include <sstream>
 #include <fstream>
@@ -74,6 +74,17 @@ PronounceDict::PronounceDict(const map<string, vector<string>>& pronun_dict)
  */
 bool PronounceDict::homophones(const string& word1, const string& word2) const
 {
-    /* Your code goes here! */
-    return true;
+        string w1 = word1;
+    string w2 = word2;
+    //std::cout<<"word1:"<<w1<<" word2: "<<w2<<std::endl;    
+    for (int i=0; i<int(w1.size()); i++){
+    	w1[i] = toupper(w1[i]);
+    }
+    for (int i=0; i<int(w2.size()); i++){
+    	w2[i] = toupper(w2[i]);
+    }
+    //std::cout<<"Post-upper word1:"<<w1<<" word2: "<<w2<<std::endl;   
+    if (dict.find(w1) == dict.end()){ return false;}//not in dict
+    if (dict.find(w2) == dict.end()){ return false;}//not in dict
+    return (dict.find(w1))->second == (dict.find(w2))->second;
 }

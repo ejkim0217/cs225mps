@@ -47,13 +47,32 @@ void CommonWords::init_file_word_maps(const vector<string>& filenames)
         // get the corresponding vector of words that represents the current
         // file
         vector<string> words = file_to_vector(filenames[i]);
-        /* Your code goes here! */
+        //Initialize a map for each file, iterate through word vector and add to map
+        map<string, unsigned int> wmap;
+        for (std::vector<string>::iterator it = words.begin(); it != words.end(); ++it){
+        	  if (wmap.find(*it) == wmap.end()){
+        	  		wmap[*it] = 1;		//set to 1
+        	  }
+        	  else{		//increase frequency
+        	  		wmap[*it] ++;
+        	  }
+        }
+        file_word_maps[i] = wmap;	//set current word map to file-specific map
     }
 }
 
 void CommonWords::init_common()
-{
-    /* Your code goes here! */
+{	//maps a word to the number of documents the word appears in
+	for (std::vector<map<string, unsigned int>>::iterator mapit = file_word_maps.begin(); mapit != file_word_maps.end(); ++mapit){			//map iterations
+		for (map<string, unsigned int>::iterator wit = mapit->begin(); wit != mapit->end(); ++wit){	//word iterations
+			if (common.find(wit->first) == common.end()){
+				common[wit->first] = 1;
+			}
+			else{
+				common[wit->first] ++;
+			}
+		}	
+	} 
 }
 
 /**
@@ -64,7 +83,23 @@ void CommonWords::init_common()
 vector<string> CommonWords::get_common_words(unsigned int n) const
 {
     vector<string> out;
-    /* Your code goes here! */
+    //iterate through common
+    for (map<string, unsigned int>::const_iterator cit = common.begin(); cit != common.end(); ++cit){
+    	if (file_word_maps.size() <= cit->second){		//if file number is same as common val
+			unsigned int fileswword = 0;		//counter
+			//iterate through each map
+			for (vector<map<string, unsigned int>>::const_iterator mit = file_word_maps.begin(); mit != file_word_maps.end(); ++mit){
+				if (mit->at(cit->first) >= n){	//if it happens n or more times
+					fileswword++;			//increase counter
+				}
+			}
+			if (fileswword >= file_word_maps.size()){	//compare counter to file #
+				cout<<cit->first<<endl;
+				out.push_back(cit->first);					//push that shit
+			}	
+    	}
+    }
+
     return out;
 }
 

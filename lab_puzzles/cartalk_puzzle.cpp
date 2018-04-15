@@ -5,9 +5,9 @@
  * @author Matt Joras
  * @date Winter 2013
  */
-
+#include <iostream>
 #include <fstream>
-
+#include <tuple>
 #include "cartalk_puzzle.h"
 
 using namespace std;
@@ -23,8 +23,26 @@ using namespace std;
 vector<std::tuple<std::string, std::string, std::string>> cartalk_puzzle(PronounceDict d,
                                     const string& word_list_fname)
 {
-    vector<std::tuple<std::string, std::string, std::string>> ret;
+	vector<std::tuple<std::string, std::string, std::string>> ret;
 
-    /* Your code goes here! */
-    return ret;
+	ifstream wordsFile(word_list_fname);
+	string word;
+	if (wordsFile.is_open()) {
+		while (getline(wordsFile, word)) {
+			int len = word.length();
+			if (len == 5){
+				string homo1 = word.substr(1,5);		//word 
+				string homo2 = word.substr(0,1) + word.substr(2,5);
+				if (d.homophones(homo1, word) && d.homophones(homo2, word)){
+					ret.push_back(make_tuple(word, homo1, homo2));
+					//std::cout<<word<<std::endl;
+				}
+			}	     
+		}
+	}
+
+	return ret;
 }
+
+
+
