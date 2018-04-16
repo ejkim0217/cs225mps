@@ -71,8 +71,8 @@ void CommonWords::init_common()
 			else{
 				common[wit->first] ++;
 			}
-		}	
-	} 
+		}
+	}
 }
 
 /**
@@ -94,9 +94,9 @@ vector<string> CommonWords::get_common_words(unsigned int n) const
 				}
 			}
 			if (fileswword >= file_word_maps.size()){	//compare counter to file #
-				cout<<cit->first<<endl;
+				//cout<<cit->first<<endl;
 				out.push_back(cit->first);					//push that shit
-			}	
+			}
     	}
     }
 
