@@ -48,14 +48,13 @@ V BTree<K, V>::find(const BTreeNode* subroot, const K& key) const
      * anywhere in the tree and return the default V.
      */
 
-    //Return valid index
-    // std::cout<< first_larger_idx << std::endl;
+     // Base case where the element exists
     if(subroot->elements[first_larger_idx].key == key)
       return subroot->elements[first_larger_idx].value;
-
+    //Base case where it is leaf but key does not exist
     if(subroot->is_leaf)
       return V();
-
+    //recursive case
     return find(subroot->children[first_larger_idx], key);
 }
 
@@ -162,11 +161,16 @@ void BTree<K, V>::split_child(BTreeNode* parent, size_t child_idx)
     //If fine return
 
     //General
+    //Calls insert of a vector -> iterates through children and inserts the median child element
     parent->elements.insert(elem_itr, child->elements[mid_elem_idx]);
+    //Copies all the elements from the med+1 position in the child node to a new right child node -> must precede new_left
     new_right->elements.assign(mid_elem_itr + 1, child->elements.end());
+    //Copies all the elements from the beginning of the child to the med position
     new_left->elements.assign(child->elements.begin(), mid_elem_itr);
+    //Inserts the new right child at the correct position in the children vector of the parent
     parent->children.insert(child_itr, new_right);
 
+    //If new_left and new_right are not leafs, this splits the children between them
     if(!(child->is_leaf)){
       new_right->children.assign(mid_child_itr, new_left->children.end());
       new_left->children.assign(new_left->children.begin(), mid_child_itr);
