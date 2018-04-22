@@ -12,6 +12,9 @@
 #include <unordered_map>
 #include "graph.h"
 #include "dsets.h"
+#include <vector>
+#include <map>
+#include <functional>
 
 using std::stack;
 using std::queue;
@@ -50,6 +53,7 @@ namespace GraphTools
      */
     Edge BFS(Graph& graph, Vertex start);
     /// @endcond
+
 }
 
 #endif

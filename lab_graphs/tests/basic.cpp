@@ -34,7 +34,7 @@ TEST_CASE("minWeight_MultiEdge_EdgeLabels", "[weight=10]") {
     std::sort(edges.begin(), edges.end());
     vector<Edge>::iterator nonMinEdge;
     vector<Edge>::iterator minEdge = edges.begin();
-    
+
     CHECK(minEdge->getLabel() == "MIN");
     for(nonMinEdge = edges.begin() + 1; nonMinEdge != edges.end(); ++nonMinEdge)
     {
@@ -102,6 +102,7 @@ TEST_CASE("kruskal_all", "[weight = 15]")
     //  (i.e., there is only one solution)
     Graph graph(true, 10, 61);
     GraphTools::findMST(graph);
+    graph.print();
     vector<Edge> edges = graph.getEdges();
     vector<Edge>::iterator edge;
     for(edge = edges.begin(); edge != edges.end(); ++edge)
@@ -111,7 +112,7 @@ TEST_CASE("kruskal_all", "[weight = 15]")
             edge_eq(*edge, 5, 8) || edge_eq(*edge, 8, 9)
           )
         {
-            if (edge->getLabel() == "MST") 
+            if (edge->getLabel() == "MST")
 		FAIL("labeled \"MST\" on non-MST edge");
 	}
         else if(edge->getLabel() != "MST")
@@ -121,4 +122,3 @@ TEST_CASE("kruskal_all", "[weight = 15]")
         }
     }
 }
-

@@ -10,8 +10,7 @@ class DisjointSets{
     int find (int elem);
     void setunion(int a, int b);
     int size(int elem);
-  private:
-      std::vector<int> uptree;
+    std::vector<int> uptree;
 };
 
 

@@ -26,7 +26,35 @@
 int GraphTools::findMinWeight(Graph& graph)
 {
     //TODO: YOUR CODE HERE
-    return -1;
+    //
+    // vector<Edge> edges = graph.getEdges();
+    //
+    // for(vector<Edge>::iterator eit = edges.begin(); eit != edges.end(); eit++){
+    //   edges[eit] = graph.setEdgeLabel(edges[eit], "UNEXPLORED");
+    // }
+
+    queue<Vertex> q;
+    Vertex initial = graph.getStartingVertex();
+    q.push(initial);
+    vector<Vertex> adj_vtx = graph.getAdjacent(initial);
+    Edge min = Edge(initial, adj_vtx[0]);
+
+    while (!q.empty()){
+        initial = q.front();
+        q.pop();
+        adj_vtx = graph.getAdjacent(initial);
+
+        for(unsigned long vit = 0; vit < adj_vtx.size(); vit++){
+          if(graph.getEdgeLabel(initial, adj_vtx[vit]) != "DISCOVERY"){
+            q.push(adj_vtx[vit]);
+            Edge current = graph.setEdgeLabel(initial, adj_vtx[vit], "DISCOVERY");
+            if(graph.getEdgeWeight(min.source, min.dest) > graph.getEdgeWeight(initial, adj_vtx[vit]))
+              min = current;
+          }
+        }
+    }
+    graph.setEdgeLabel(min.source, min.dest, "MIN");
+    return graph.getEdgeWeight(min.source, min.dest);
 }
 
 /**
@@ -53,8 +81,59 @@ int GraphTools::findMinWeight(Graph& graph)
 int GraphTools::findShortestPath(Graph& graph, Vertex start, Vertex end)
 {
     //TODO: YOUR CODE HERE
+    // vector<Vertex> vertices = getVertices(graph);
+    // vector<Edge> edges = getEdges(graph);
+    // for(vector<Vertex>::iterator it = vertices.begin(); it != vertices.end(); it++){
+    //   vertices[i] = graph.setVertexLabel(vertices[it], "UNEXPLORED");
+    // }
+    // for(vector<Edge>::iterator eit = edges.begin(); eit != edges.end(); eit++){
+    //   edges[i] = graph.setEdgeLabel(edges[i], "UNEXPLORED");
+    // }
+    // if(start == end)
+    //   return 0;
+    //
+    // int min = INT_MAX;
+    // vector<Vertex> adj_vtx = graph.getAdjacent(start);
+    //
+    // for(unsigned long vit = 0; vit < adj_vtx.size(); vit++){
+    //   if(graph.getEdgeLabel(start, adj_vtx[vit]) != "DISCOVERY"){
+    //     Edge current = graph.setEdgeLabel(start, adj_vtx[vit], "DISCOVERY");
+    //     int pot_min = findShortestPath(graph, adj_vtx[vit], end) + 1;
+    //     if(pot_min < min){
+    //       min = pot_min;
+    //       Edge current = graph.setEdgeLabel(start, adj_vtx[vit], "MINPATH");
+    //     }
+    //   }
+    // }
+    // return min;
+    queue<Vertex> q;
+    q.push(start);
+    std::map<Vertex, Vertex> my_map;
+    Vertex dummy;
+    my_map.insert(std::pair<Vertex, Vertex>(start, dummy));
+    Vertex initial;
 
-    return -1;
+    while (!q.empty()){
+        initial = q.front();
+        q.pop();
+        vector<Vertex> adj_vtx = graph.getAdjacent(initial);
+
+        for(unsigned long vit = 0; vit < adj_vtx.size(); vit++){
+          if(graph.getEdgeLabel(initial, adj_vtx[vit]) != "EXPLORED"){
+            q.push(adj_vtx[vit]);
+            Edge current = graph.setEdgeLabel(initial, adj_vtx[vit], "EXPLORED");
+            my_map.insert(std::pair<Vertex, Vertex>(adj_vtx[vit], initial));
+          }
+        }
+    }
+    int min = 0;
+    Vertex i = end;
+    while(my_map[i] != dummy){
+      min++;
+      graph.setEdgeLabel(i, my_map[i], "MINPATH");
+      i = my_map[i];
+    }
+    return min;
 }
 
 /**
@@ -73,5 +152,39 @@ int GraphTools::findShortestPath(Graph& graph, Vertex start, Vertex end)
 void GraphTools::findMST(Graph& graph)
 {
     //TODO: YOUR CODE HERE
-}
 
+    //Make a DisjointSets object. This will make an uptree for you
+    DisjointSets forest;
+    vector<Vertex> vertices = graph.getVertices();
+    std::map<Vertex, int> my_map;
+    forest.addelements(vertices.size());
+    for(unsigned long i=0; i < vertices.size(); i++){
+      my_map.insert(std::pair<Vertex, int>(vertices[i], i));
+    }
+
+    vector<Edge> my_edges = graph.getEdges();
+
+    //Implement Kruskal's algorithm
+    std::sort(my_edges.begin(), my_edges.end());
+    std::queue<Edge> q;
+    for(unsigned i =0; i < my_edges.size(); i++){
+      //Priority_queue self-sorts
+      q.push(my_edges[i]);
+      std::cout<<q.back().getWeight()<<endl;
+    }
+
+    int count = 0;
+    int size = my_edges.size() -1;
+    while(!q.empty()){
+      Edge temp = q.front();
+      q.pop();
+      int a = forest.find(my_map[temp.source]);
+      int b = forest.find(my_map[temp.dest]);
+      if(a != b){
+        graph.setEdgeLabel(temp.source, temp.dest, "MST");
+        forest.setunion(a, b);
+        count ++;
+      }
+    }
+
+}
