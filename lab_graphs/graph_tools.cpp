@@ -168,13 +168,9 @@ void GraphTools::findMST(Graph& graph)
     std::sort(my_edges.begin(), my_edges.end());
     std::queue<Edge> q;
     for(unsigned i =0; i < my_edges.size(); i++){
-      //Priority_queue self-sorts
       q.push(my_edges[i]);
-      std::cout<<q.back().getWeight()<<endl;
     }
 
-    int count = 0;
-    int size = my_edges.size() -1;
     while(!q.empty()){
       Edge temp = q.front();
       q.pop();
@@ -183,7 +179,7 @@ void GraphTools::findMST(Graph& graph)
       if(a != b){
         graph.setEdgeLabel(temp.source, temp.dest, "MST");
         forest.setunion(a, b);
-        count ++;
+
       }
     }
 
