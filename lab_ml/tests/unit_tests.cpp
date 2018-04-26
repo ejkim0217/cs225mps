@@ -49,8 +49,8 @@ TEST_CASE("NimLearner(3) constructor creates the correct vertices", "[weight=1][
   const Graph & g = nim.getGraph();
 
   REQUIRE( vertexExists(g, "p1-3") );
-  //REQUIRE( findVertexLabel(g, "p2-3") ); okay but not required, never reached
-  REQUIRE( vertexExists(g, "p1-2") );
+  //REQUIRE( vertexExists(g, "p2-3") );  okay but not required, never reached
+  //REQUIRE( vertexExists(g, "p1-2") );  okay but not required, never reached since p2-3 -> p1-2 is the only edge to reach this state
   REQUIRE( vertexExists(g, "p2-2") );
   REQUIRE( vertexExists(g, "p1-1") );
   REQUIRE( vertexExists(g, "p2-1") );
@@ -64,34 +64,28 @@ TEST_CASE("NimLearner(3) constructor creates the correct edges", "[weight=1][par
 
   const Graph & g = nim.getGraph();
 
-  //
-  // A minimum of 8 edges are required (p2-3 edges are not required);
-  // 10 edges may be present with p2-3 edges
-  //
-  REQUIRE(g.getEdges().size() >= 8);
-  REQUIRE(g.getEdges().size() <= 10);
+  // always required edges
+  REQUIRE( edgeExists(g, "p1-3", "p2-2") );
+  REQUIRE( edgeExists(g, "p1-3", "p2-1") );
 
-  if (g.getEdges().size() >= 8) {
-    // always required edges
-    REQUIRE( edgeExists(g, "p1-3", "p2-2") );
-    REQUIRE( edgeExists(g, "p1-3", "p2-1") );
+  REQUIRE( edgeExists(g, "p1-1", "p2-0") );
 
-    REQUIRE( edgeExists(g, "p1-2", "p2-1") );
-    REQUIRE( edgeExists(g, "p1-2", "p2-0") );
+  REQUIRE( edgeExists(g, "p2-2", "p1-1") );
+  REQUIRE( edgeExists(g, "p2-2", "p1-0") );
 
-    REQUIRE( edgeExists(g, "p1-1", "p2-0") );
+  REQUIRE( edgeExists(g, "p2-1", "p1-0") );
 
-    REQUIRE( edgeExists(g, "p2-2", "p1-1") );
-    REQUIRE( edgeExists(g, "p2-2", "p1-0") );
-
-    REQUIRE( edgeExists(g, "p2-1", "p1-0") );
-  }
-
-  if (g.getEdges().size() > 8) {
-    // optional edges
+  // required edges of p2-3 exists
+  if ( vertexExists(g, "p2-3") ) {
     REQUIRE( edgeExists(g, "p2-3", "p1-2") );
     REQUIRE( edgeExists(g, "p2-3", "p1-1") );
   }
+
+  // required edges if p1-2 exists
+  if ( vertexExists(g, "p1-2") ) {
+    REQUIRE( edgeExists(g, "p1-2", "p2-1") );
+    REQUIRE( edgeExists(g, "p1-2", "p2-0") );
+  }  
 }
 
 
