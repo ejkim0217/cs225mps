@@ -26,6 +26,25 @@
  */
 NimLearner::NimLearner(unsigned startingTokens) : g_(true, true) {
     /* Your code goes here! */
+    // Creates every vertex possible
+    for(int i =0; i <= startingTokens; i++){
+      Vertex p1 = new Vertex();
+      Vertex p2 = new Vertex();
+      g_.insertVertex(p1);
+      g_.setVertexLabel(p1, "p1-"+std::to_string(i));
+      g_.insertVertex(p2);
+      g_.setVertexLabel(p2, "p2-"+std::to_string(i));
+    }
+    // Creates every distance = 1 edge
+    for(int i=startingTokens; i > 0; i--){
+      g_.insertEdge("p1-"+std::to_string(i), "p2-"+std::to_string(i-1));
+      g_.insertEdge("p2-"+std::to_string(i), "p1-"+std::to_string(i-1));
+    }
+    //Creates every distance = 2 edge
+    for(int i = startingTokens; i > 1; i--){
+      g_.insertEdge("p1-"+std::to_string(i), "p2-"+std::to_string(i-2));
+      g_.insertEdge("p2-"+std::to_string(i), "p1-"+std::to_string(i-2));
+    }
 }
 
 /**

@@ -9,7 +9,7 @@
  *  - Added doxygen comments
  *  - Created better error handling
  *  - More encapsulated and object-oriented
- * 
+ *
  *  Updated Spring 2018 by Jordi
  *  - Added doxygen comments
  *  - Created better error handling
@@ -101,7 +101,7 @@ public:
      * @return a vector of all vertices in the graph
      */
     vector<Vertex> getVertices() const;
-    
+
 
     /**
      * Gets an edge between two vertices.
