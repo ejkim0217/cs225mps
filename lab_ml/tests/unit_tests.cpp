@@ -85,7 +85,7 @@ TEST_CASE("NimLearner(3) constructor creates the correct edges", "[weight=1][par
   if ( vertexExists(g, "p1-2") ) {
     REQUIRE( edgeExists(g, "p1-2", "p2-1") );
     REQUIRE( edgeExists(g, "p1-2", "p2-0") );
-  }  
+  }
 }
 
 
@@ -190,4 +190,3 @@ TEST_CASE("NimLearner(4) has ending edge weights summing to the random games pla
            g.getEdgeWeight( p2_2, p1_0 ) +
            g.getEdgeWeight( p2_1, p1_0 ) == 10000 );
 }
-
