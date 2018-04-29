@@ -11,9 +11,9 @@ class SquareMaze{
     void makeMaze(int width, int height);
     bool canTravel(int x, int y, int dir) const;
     void setWall(int x, int y, int dir, bool exists);
-    // vector<int> solveMaze();
-    // PNG * drawMaze() const;
-    // PNG * drawMazeWithSolution();
+    vector<int> solveMaze();
+    PNG * drawMaze() const;
+    PNG * drawMazeWithSolution();
   private:
     vector<int> maze;
     int width_ = 0;
