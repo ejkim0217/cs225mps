@@ -73,19 +73,19 @@ bool SquareMaze::canTravel(int x, int y, int dir) const{
 	if ((0 <= x)&&(x < width_)&&(0 <= y)&&(y < height_)){	//If within dimensions
 		int value = maze[(y*width_) + x];
 		//CHECK RIGHT. If stays within dimensions
-		if ((dir == 0)&&((x+1) < width_)){			
+		if ((dir == 0)&&((x+1) < width_)){
 			if (value == 0 || value == 2){return true;}
 		}
-		//CHECK DOWN. If stays within 
+		//CHECK DOWN. If stays within
 		else if ((dir == 1)&&((y+1) < height_)){
 			if (value == 0 || value == 1){return true;}
 		}
 		//CHECK LEFT
-		else if ((dir == 2)&&(0 <= (x-1))){	
+		else if ((dir == 2)&&(0 <= (x-1))){
 			if (maze[(y*width_) + x-1] == 0 || maze[(y*width_) + x-1] == 2){return true;}
 		}
 		//CHECK UP
-		else if ((dir == 3)&&(0 <= (y-1))){	
+		else if ((dir == 3)&&(0 <= (y-1))){
 			if (maze[(y-1)*(width_) + x] == 0 || maze[(y-1)*(width_) + x] == 1){return true;}
 		}
 	}
@@ -158,7 +158,7 @@ vector<int> SquareMaze::solveMaze(){
   std::map<int, int> parent;	//For backtracing purposes
   int count = 0;
 
-  while (!q.empty()){	//Initial BFS 
+  while (!q.empty()){	//Initial BFS
       int element = q.front();
       q.pop();
       int x = element % width_;
@@ -172,7 +172,7 @@ vector<int> SquareMaze::solveMaze(){
       	if (canTravel(x,y,dir) && my_map.find(nelement) == my_map.end()){
       		q.push(nelement);
       		my_map.insert(std::pair<int, int>(nelement, my_map[element]+1));
-      		parent[nelement] = element; 
+      		parent[nelement] = element;
       	}
       }
       /*  SAME SHIT BUT JUST MESSIER
@@ -214,7 +214,7 @@ vector<int> SquareMaze::solveMaze(){
 				temppath.push_back(2);	//LEFT dir = 2
 			}
 			//INDEX DELTA DOWN
-			else if(rdir == width_){	
+			else if(rdir == width_){
 				temppath.push_back(1);	//DOWN dir = 1
 			}
 			//INDEX DELTA UP
@@ -229,7 +229,7 @@ vector<int> SquareMaze::solveMaze(){
 			bestdest = dest;					//Mark bestdest with temp dest of bottom row
 		}
 	}
-	
+
   //Reverse the vector path
   std::reverse(bestpath.begin(), bestpath.end());
   return bestpath;
@@ -238,21 +238,20 @@ vector<int> SquareMaze::solveMaze(){
 PNG * SquareMaze::drawMaze() const{
   PNG * mazePNG = new PNG(width_*10+1, height_*10+1);
   //Blacken top row
-  for(int i =0; i<width_*10+1; i++){
-    HSLAPixel pix = mazePNG->getPixel(i, 0);
-    if(i > 0 && i < 10)
-      pix.l = 0;
+  for(int i = 10; i<width_*10+1; i++){
+    HSLAPixel & pix = mazePNG->getPixel(i, 0);
+    pix.l = 0;
   }
   //Blacken left most row
   for(int i=0; i<height_*10+1; i++){
-    HSLAPixel pix = mazePNG->getPixel(0, i);
+    HSLAPixel & pix = mazePNG->getPixel(0, i);
     pix.l = 0;
   }
   //Build walls
   for(int x = 0; x < width_; x++){
     for(int y = 0; y < height_; y++){
       int value = maze[(y*width_) + x];	//Get value for index
-      
+
       //CHECK RIGHT WALL
       if(value == 3 || value == 1){			//if both or just right
         for(int k = 0; k <= 10; k++){		//DRAW RIGHT
@@ -276,11 +275,10 @@ PNG * SquareMaze::drawMaze() const{
 PNG * SquareMaze::drawMazeWithSolution(){
 	PNG * sol = new PNG(width_*10+1, height_*10+1);
 	vector<int> bestpath;
-	int start = (5*width_) + 5;	//start at (5,5)
-	int element = start;
+	int element = (5*width_) + 5;	//start at (5,5)
 	int x = element % width_;
-   int y = element / width_;
-   bestpath = solveMaze();
+  int y = element / width_;
+  bestpath = solveMaze();
 	for (int dir : bestpath){
       for (int p = 0; p < 11; ++p){//color 11 pixels in a line
 			if (dir == 0){			//RIGHT
@@ -298,14 +296,15 @@ PNG * SquareMaze::drawMazeWithSolution(){
 			HSLAPixel& pix = sol->getPixel(x,y);
 			pix.h = 0;
 			pix.s = 1;
-      	pix.l = .5;
-      	pix.a = 1;
+      pix.l = .5;
+      pix.a = 1;
 		}
 	}
- 	//too tired to do end conditions. 
+	
+ 	//too tired to do end conditions.
 	/*
-	"Make the exit by undoing the bottom wall of the 
-	dest square: call the dest maze coords x,y and whiten 
+	"Make the exit by undoing the bottom wall of the
+	dest square: call the dest maze coords x,y and whiten
 	the pixels with coords (x*10+k, (y+1)*10) for k from 1 to 9
   	*/
   return sol;
