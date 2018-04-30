@@ -273,14 +273,19 @@ PNG * SquareMaze::drawMaze() const{
 }
 
 PNG * SquareMaze::drawMazeWithSolution(){
-	PNG * sol = new PNG(width_*10+1, height_*10+1);
+	PNG * sol = drawMaze();
 	vector<int> bestpath;
-	int element = (5*width_) + 5;	//start at (5,5)
-	int x = element % width_;
-  int y = element / width_;
+	int x = 5;
+  int y = 5;
   bestpath = solveMaze();
 	for (int dir : bestpath){
-      for (int p = 0; p < 11; ++p){//color 11 pixels in a line
+      for (int p = 1; p < 11; ++p){//color 11 pixels in a line
+			HSLAPixel& pix = sol->getPixel(x,y);
+			pix.h = 0;
+			pix.s = 1;
+			pix.l = .5;
+			pix.a = 1;
+
 			if (dir == 0){			//RIGHT
 				x++;	//update x
 			}
@@ -293,14 +298,17 @@ PNG * SquareMaze::drawMazeWithSolution(){
 			if (dir == 3){			//UP
 				y--;	//update y
 			}
-			HSLAPixel& pix = sol->getPixel(x,y);
-			pix.h = 0;
-			pix.s = 1;
-      pix.l = .5;
-      pix.a = 1;
 		}
+		HSLAPixel& pix = sol->getPixel(x,y);
+		pix.h = 0;
+		pix.s = 1;
+		pix.l = .5;
+		pix.a = 1;
 	}
-	
+	for(int k =1; k < 10; k++){
+		HSLAPixel& pix = sol->getPixel(x+k-5, y+5);
+		pix.l = 1;
+	}
  	//too tired to do end conditions.
 	/*
 	"Make the exit by undoing the bottom wall of the
