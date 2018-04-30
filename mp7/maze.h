@@ -3,6 +3,10 @@
 #define MAZE_H
 #include "cs225/PNG.h"
 #include <vector>
+#include "dsets.h"
+#include <queue>
+#include <map>
+
 using namespace cs225;
 
 class SquareMaze{
@@ -16,6 +20,7 @@ class SquareMaze{
     PNG * drawMazeWithSolution();
   private:
     vector<int> maze;
+    DisjointSets cycle_detection;
     int width_ = 0;
     int height_ = 0;
 };

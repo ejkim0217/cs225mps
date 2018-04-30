@@ -3,6 +3,7 @@
 #include "dsets.h"
 #include "cs225/PNG.h"
 
+
 SquareMaze::SquareMaze(){
 
 }
@@ -23,7 +24,6 @@ void SquareMaze::makeMaze(int width, int height){
     maze[i] = 3;
   }
   //Generate a DisjointSets to detect cycles
-  DisjointSets cycle_detection;
   cycle_detection.addelements(width * height);
   //Remove walls till there is only one uptree, which size
   while(cycle_detection.size(0) < (width * height)){
@@ -52,10 +52,12 @@ void SquareMaze::makeMaze(int width, int height){
       //Update DisjointSets
       cycle_detection.setunion(a, b);
       //Update maze vector
-      if(rando == 1)
+      if(rando == 1){
         setWall(element%width, element/width, 0, false);
-      else
+      }
+      else{
         setWall(element%width, element/width, 1, false);
+      }
     }
   }
 }
@@ -132,6 +134,77 @@ void SquareMaze::setWall(int x, int y, int dir, bool exists){
 }
 vector<int> SquareMaze::solveMaze(){
   vector<int> path;
+  queue<int> q;
+  q.push(0);
+  //Initialize to -1
+  // Write down once visited
+  //
+  std::map<int, int> my_map;
+  my_map.insert(std::pair<int,int>(0, 0));
+  std::map<int, int> parent;
+  int count = 0;
+
+  while (!q.empty()){
+      int element = q.front();
+      q.pop();
+      int x = element%width_;
+      int y = element/width_;
+      //Go right , right = 0
+      if(my_map.find(y*width_+x+1) == my_map.end() && canTravel(x, y, 0)){
+        q.push(y*width_+x+1);
+        my_map.insert(std::pair<int, int>(y*width_+x+1, my_map[element]+1));
+        parent.insert(std::pair<int, int>(y*width_+x+1, element));
+      }
+      //Down, down = 1
+      if(my_map.find((y+1)*width_+x) == my_map.end() && canTravel(x, y, 1)){
+        q.push((y+1)*width_+x);
+        my_map.insert(std::pair<int, int>((y+1)*width_+x, my_map[element]+1));
+        parent.insert(std::pair<int, int>((y+1)*width_+x, element));
+      }
+      //Left, left = 2
+      if(my_map.find(y*width_+x-1) == my_map.end() && canTravel(x, y, 2)){
+        q.push(y*width_+x-1);
+        my_map.insert(std::pair<int, int>(y*width_+x-1, my_map[element]+1));
+        parent.insert(std::pair<int, int>(y*width_+x-1, element));
+      }
+      //Up, up = 3
+      if(my_map.find((y-1)*width_+x) == my_map.end() && canTravel(x, y, 3)){
+        q.push((y-1)*width_+x);
+        my_map.insert(std::pair<int, int>((y-1)*width_+x, my_map[element]+1));
+        parent.insert(std::pair<int, int>((y-1)*width_+x, element));
+      }
+  }
+  int max_dist = 0;
+  int dest = 0;
+  for(int i = 0; i <width_ ; i++){
+    if(max_dist < my_map[(height_-1)*width_+i]){
+      max_dist = my_map[(height_-1)*width_+i];
+      dest = (height_-1)*width_ + i;
+    }
+  }
+
+  while(parent[dest] != 0){
+    int dir = parent[dest] - dest;
+    //Add right
+    if(dir == 1){
+      path.push_back(0);
+    }
+    //Add left
+    else if(dir == -1){
+      path.push_back(2);
+    }
+    //Add up
+    else if(dir == width_){
+      path.push_back(3);
+    }
+    //Add down
+    else if(dir == -width_){
+      path.push_back(1);
+    }
+    dest = parent[dest];
+  }
+  //Reverse the vector path
+  std::reverse(path.begin(), path.end());
   return path;
 }
 PNG * SquareMaze::drawMaze() const{
@@ -158,7 +231,7 @@ PNG * SquareMaze::drawMaze() const{
           pix.l = 0;
         }
       }
-      //Check for left wall
+      //Check for down wall
       if(value == 3 || value == 2){
         for(int k = 0; k <= 10; k++){
           HSLAPixel pix = mazePNG->getPixel(j*10+k, (i+1)*10);
