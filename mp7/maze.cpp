@@ -17,10 +17,10 @@ SquareMaze::SquareMaze(){
 void SquareMaze::makeMaze(int width, int height){
   //Makes vector the correct rectangular size with walls
   /*
-	  	0 = no walls
-	  	1 = right wall
-	  	2 = down wall
-	  	3 = right + down wall
+	  	00 = 0 = no walls
+	  	01 = 1 = right wall
+	  	10 = 2 = down wall
+	  	11 = 3 = right + down wall
   */
 	//Make maze vector
 	maze.clear();
@@ -309,11 +309,5 @@ PNG * SquareMaze::drawMazeWithSolution(){
 		HSLAPixel& pix = sol->getPixel(x+k-5, y+5);
 		pix.l = 1;
 	}
- 	//too tired to do end conditions.
-	/*
-	"Make the exit by undoing the bottom wall of the
-	dest square: call the dest maze coords x,y and whiten
-	the pixels with coords (x*10+k, (y+1)*10) for k from 1 to 9
-  	*/
   return sol;
 }
