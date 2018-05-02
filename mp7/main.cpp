@@ -9,9 +9,7 @@ int main()
 {
     // Write your own main here
   	SquareMaze maze;
-  	maze.makeMaze(10, 15);
-  	maze.solveMaze();
-  	PNG * actualOutput = maze.drawMazeWithSolution();
+  	PNG * actualOutput = maze.drawCreativeMaze();
   	actualOutput->writeToFile("mp7creative"+ string(".png"));
     return 0;
 }

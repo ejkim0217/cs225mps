@@ -311,3 +311,107 @@ PNG * SquareMaze::drawMazeWithSolution(){
 	}
   return sol;
 }
+
+PNG * SquareMaze::drawCreativeMaze(){
+  maze.resize(4*4);
+	width_ = 4;
+	height_ = 4;
+	maze[0] = 1;
+	maze[1] = 0;
+	maze[2] = 1;
+	maze[3] = 1;
+	maze[4] = 0;
+	maze[5] = 3;
+	maze[6] = 2;
+	maze[7] = 3;
+	maze[8] = 0;
+	maze[9] = 1;
+	maze[10] = 0;
+	maze[11] = 0;
+	maze[12] = 1;
+	maze[13] = 3;
+	maze[14] = 0;
+	maze[15] = 0;
+
+	PNG * creative = new PNG(width_*10+1, height_*10+1);
+	for(int x = 0; x < width_*10+1; x++){
+    for(int y = 0; y < height_*10+1; y++){
+			HSLAPixel & pix = creative->getPixel(x,y);
+			if(pix.l != 0)
+				pix.h = x*y % 360;
+				pix.s = 1;
+				pix.l = .5;
+				pix.a = 1;
+			}
+		}
+
+		for(int i = 10; i<width_*10+1; i++){
+	    HSLAPixel & pix = creative->getPixel(i, 0);
+	    pix.l = 0;
+	  }
+	  //Blacken left most row
+	  for(int i=0; i<height_*10+1; i++){
+	    HSLAPixel & pix = creative->getPixel(0, i);
+	    pix.l = 0;
+	  }
+	  //Build walls
+	  for(int x = 0; x < width_; x++){
+	    for(int y = 0; y < height_; y++){
+	      int value = maze[(y*width_) + x];	//Get value for index
+
+	      //CHECK RIGHT WALL
+	      if(value == 3 || value == 1){			//if both or just right
+	        for(int k = 0; k <= 10; k++){		//DRAW RIGHT
+	          HSLAPixel& pix = creative->getPixel((x+1)*10, y*10+k);
+	          pix.l = 0;
+	        }
+	      }
+	      //CHECK DOWN WALL
+	      if(value == 3 || value == 2){			//If both or just down
+	        for(int k = 0; k <= 10; k++){		//DRAW DOWN
+	          HSLAPixel& pix = creative->getPixel(x*10+k, (y+1)*10);
+	          pix.l = 0;
+	        }
+	      }
+	    }
+	  }
+
+
+	vector<int> bestpath;
+	int x = 5;
+	int y = 5;
+	bestpath = solveMaze();
+	for (int dir : bestpath){
+			for (int p = 1; p < 11; ++p){//color 11 pixels in a line
+			HSLAPixel& pix = creative->getPixel(x,y);
+			pix.h = 0;
+			pix.s = 1;
+			pix.l = .5;
+			pix.a = 1;
+
+			if (dir == 0){			//RIGHT
+				x++;	//update x
+			}
+			if (dir == 1){			//DOWN
+				y++;	//update y
+			}
+			if (dir == 2){			//LEFT
+				x--;	//update x
+			}
+			if (dir == 3){			//UP
+				y--;	//update y
+			}
+		}
+		HSLAPixel& pix = creative->getPixel(x,y);
+		pix.h = 0;
+		pix.s = 1;
+		pix.l = .5;
+		pix.a = 1;
+	}
+	for(int k =1; k < 10; k++){
+		HSLAPixel& pix = creative->getPixel(x+k-5, y+5);
+		pix.l = 1;
+	}
+	return creative;
+
+}
