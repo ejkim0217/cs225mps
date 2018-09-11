@@ -17,8 +17,6 @@ int DisjointSets::find (int elem){
   return temp;
 }
 void DisjointSets::setunion(int a, int b){
-
-
   int root_a = find(a);
   int root_b = find(b);
   if(root_a == root_b)
